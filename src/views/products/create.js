@@ -2,6 +2,7 @@ import React from 'react';
 import HeaderMenu from '../layout/header';
 import {Breadcrumb, Layout, Form, Input, Button} from 'antd';
 import API_BASE_URL from '../../config/config';
+import {Link} from 'react-router-dom';
 
 
 const {Content} = Layout;
@@ -12,8 +13,8 @@ class CreateProduct extends React.Component {
         this.state = {
             name: '',
             color: '',
-            qty: 0,
-            price: 0,
+            qty: '',
+            price: '',
             image: '',
             error: false
         }
@@ -80,8 +81,8 @@ class CreateProduct extends React.Component {
                 <HeaderMenu />
                 <Content style={{ margin: '0 16px' }}>
                     <Breadcrumb style={{ margin: '16px 0' }}>
-                        <Breadcrumb.Item>Home</Breadcrumb.Item>
-                        <Breadcrumb.Item>Product</Breadcrumb.Item>
+                        <Link to = {'/'}><Breadcrumb.Item>Home</Breadcrumb.Item></Link>
+                        <Link to = {'/products'}><Breadcrumb.Item>Product</Breadcrumb.Item></Link>
                         <Breadcrumb.Item>Create</Breadcrumb.Item>
                     </Breadcrumb>
 
