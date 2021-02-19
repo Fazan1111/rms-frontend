@@ -60,7 +60,7 @@ export default class List extends React.Component {
     }
 
     renderBreadCrumb() {
-        return <Breadcrumb style={{marginTop: '15px'}}>
+        return <Breadcrumb style={{ margin: '10px 24px 0px 24px', backgroundColor: 'white', padding: '5px' }}>
             <Breadcrumb.Item>Home</Breadcrumb.Item>
             <Breadcrumb.Item>{this.rendertitle()}</Breadcrumb.Item>
         </Breadcrumb>
@@ -111,7 +111,7 @@ export default class List extends React.Component {
     handleSelectChange() {}
 
     renderFilterRecord() {
-        return <div className="site-layout-background" style={{ margin: 24, backgroundColor: 'white' }}>
+        return <div className="site-layout-background" style={{ margin: '10px 24px 0px 24px', backgroundColor: 'white' }}>
             <Row style={{padding: '15px'}}>
                 <Col span={6} order={1}>
                     <Input placeholder="Search" />
