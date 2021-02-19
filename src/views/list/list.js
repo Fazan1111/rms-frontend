@@ -8,8 +8,10 @@ import {
     Col, 
     Input,
     Select,
-    Modal
+    Modal,
+    Space
 } from "antd";
+import {HomeOutlined} from "@ant-design/icons";
 import HeaderMenu from "../layout/header";
 import BaseService from "../../services/BaseService";
 import "./style.css";
@@ -61,7 +63,7 @@ export default class List extends React.Component {
 
     renderBreadCrumb() {
         return <Breadcrumb style={{ margin: '10px 24px 0px 24px', backgroundColor: 'white', padding: '5px' }}>
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
+            <Breadcrumb.Item> <HomeOutlined /> Home </Breadcrumb.Item>
             <Breadcrumb.Item>{this.rendertitle()}</Breadcrumb.Item>
         </Breadcrumb>
     }
@@ -75,14 +77,14 @@ export default class List extends React.Component {
 
     renderButtonAction() {
         return (
-        <div>
+        <Space size="small">
             <Button type="primary" onClick={this.handleShowAddNewForm}>
                 Add New
             </Button>
             <Button type="danger">
                 Delete
             </Button>
-        </div>
+        </Space>
         )
     }
 
@@ -155,6 +157,7 @@ export default class List extends React.Component {
                             rowSelection={rowSelection}
                             loading={this.state.loading}
                             rowKey={record => record.id}
+                            size="middle"
                         />
                     </div>
                 </Content>
