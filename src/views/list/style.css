@@ -1,0 +1,7 @@
+table tr:nth-child(2n) td {
+    background-color: #f9f9f9;
+}
+
+table tr {
+    height: 20px !important;
+}
