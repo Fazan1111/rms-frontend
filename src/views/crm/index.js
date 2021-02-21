@@ -1,4 +1,5 @@
 import List from "../list/list";
+import CustomerService from "../../services/CustomerService";
 
 export default class Customer extends List {
     constructor(props) {
@@ -6,17 +7,6 @@ export default class Customer extends List {
         this.state = {
             data: []
         }
-
-        for (let i = 1; i <= 70; i++) {
-            this.state.data.push({
-                key: i,
-                name: `customer ${i}`,
-                phone: '010-432-001',
-                email: `fazan${i}@gmail.com`,
-                address: `Phnom Penh`
-            });
-        }
-
         this.columns = [
             {
                 title: "Name",
@@ -27,8 +17,8 @@ export default class Customer extends List {
             },
             {
                 title: "Phone Number",
-                dataIndex: 'phone',
-                key: 'phone',
+                dataIndex: 'contact',
+                key: 'contact',
                 fixed: 'left'
             },
             {
@@ -48,6 +38,6 @@ export default class Customer extends List {
     }
 
     title = "Customer";
-
+    service = new CustomerService();
 
 }

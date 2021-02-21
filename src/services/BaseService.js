@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default class BaseService {
     module = "";
-    apiHost = "https://jsonplaceholder.typicode.com";
+    apiHost = "http://localhost:9000";
     prefix = "";
     version = "";
     header = {
@@ -17,7 +17,7 @@ export default class BaseService {
         return axios({
             method: "GET",
             header: this.header,
-            url: `${this.generateApiUrl()}/${this.module}`
+            url: `${this.generateApiUrl()}/${this.module}/lists`
         })
     }
 

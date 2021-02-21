@@ -10,29 +10,16 @@ export default class UserList extends List {
         this.columns = [
             {
                 title: "Name",
-                dataIndex: 'name',
-                key: 'name',
+                dataIndex: 'userName',
+                key: 'userName',
                 fixed: 'left',
-                sorter: (a, b) => a.name.length - b.name.length,
-            },
-            {
-                title: "Phone",
-                dataIndex: 'phone',
-                key: 'phone',
-                fixed: 'left',
+                sorter: (a, b) => a.userName.length - b.userName.length,
             },
             {
                 title: "Email",
                 dataIndex: 'email',
                 key: 'email',
                 fixed: 'left',
-            },
-            {
-                title: "Address",
-                dataIndex: 'address',
-                key: 'address',
-                fixed: 'left',
-                render: (text, record) => record.address.city
             }
         ]
     }

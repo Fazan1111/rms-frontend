@@ -1,5 +1,6 @@
 import React from "react";
 import List from "../list/list";
+import SupplierService from "../../services/SupplierService";
 
 export default class Supplier extends List {
     constructor(props) {
@@ -28,8 +29,8 @@ export default class Supplier extends List {
             },
             {
                 title: "Phone Number",
-                dataIndex: 'phone',
-                key: 'phone',
+                dataIndex: 'contact',
+                key: 'contact',
                 fixed: 'left'
             },
             {
@@ -49,6 +50,7 @@ export default class Supplier extends List {
     }
 
     title = "Supplier"
+    service = new SupplierService();
 
     renderButtonAction() {
         return <div></div>

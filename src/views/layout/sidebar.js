@@ -37,7 +37,7 @@ class Sidebar extends React.Component {
                         <Menu.Item key="5" icon={<UnorderedListOutlined />}><Link to={'/customer'} className="nav-link">Customer</Link></Menu.Item>
                     </SubMenu>
                     <SubMenu key="sub3" icon={<CodepenOutlined />} title="Product">
-                        <Menu.Item key="6" icon={<UnorderedListOutlined />}><Link to={'/supplier'} className="nav-link">Category</Link></Menu.Item>
+                        <Menu.Item key="6" icon={<UnorderedListOutlined />}><Link to={'/category'} className="nav-link">Category</Link></Menu.Item>
                         <Menu.Item key="7" icon={<UnorderedListOutlined />}><Link to={'/customer'} className="nav-link">Product</Link></Menu.Item>
                     </SubMenu>
                     <SubMenu key="sub4" icon={<CodepenOutlined />} title="Transaction">
