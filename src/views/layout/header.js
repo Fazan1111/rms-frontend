@@ -1,19 +1,41 @@
 import React from 'react';
-import {Layout} from 'antd';
+import {Layout, Menu, Dropdown} from 'antd';
 import "./style.css";
-import { UserOutlined } from '@ant-design/icons';
+import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
 
 const { Header } = Layout;
 
 class HeaderMenu extends React.Component {
+    handleGoProfile() {}
+
+    handleLogout() {
+        localStorage.removeItem('accessToken');
+        window.location.reload();
+    }
+
     render() {
+        const menu = (
+            <Menu style={{width: '200px'}}>
+                <Menu.Item key="0">
+                    <a onClick={this.handleGoProfile}> <UserOutlined /> Profile</a>
+                </Menu.Item>
+                <Menu.Item key="1">
+                    <a onClick={this.handleLogout}> <LogoutOutlined /> Logout</a>
+                </Menu.Item>
+            </Menu>
+        )
+
         return(
             <Header className="site-layout-background header" style={{ padding: 0}} >
                 <div id="left-blog">
                     Rice Inventory Management
                 </div>
                 <div id="right-blog">
-                    <UserOutlined /> Administrator
+                    <Dropdown overlay={menu} trigger={['click']}>
+                        <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                            Administrator <UserOutlined />
+                        </a>
+                    </Dropdown>,
                 </div>
             </Header>
         )
