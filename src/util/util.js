@@ -1,5 +1,10 @@
-export default {
+export default class Util {
     getApiToken() {
-        return localStorage.getItem('accessToken');
+        const accessToken = localStorage.getItem('accessToken');
+        return accessToken;
+    }
+
+    getUserType() {
+        return localStorage.getItem('userRole');
     }
 }

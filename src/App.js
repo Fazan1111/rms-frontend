@@ -8,7 +8,7 @@ import Util from './util/util';
 class App extends  React.Component {
   constructor() {
     super()
-    this.util = Util;
+    this.util = new Util();
     this.state = {
       token: this.util.getApiToken()
     }
