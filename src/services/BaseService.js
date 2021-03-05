@@ -30,7 +30,26 @@ export default class BaseService {
         return axios({
             method: "GET",
             headers: this.header,
-            url: `${this.generateApiUrl()}/${this.module}/${id}`
+            url: `${this.generateApiUrl()}/${this.module}/detail/${id}`
         })
     }
+
+    insert(data) {
+        return axios({
+            method: "POST",
+            headers: this.header,
+            url: `${this.generateApiUrl()}/${this.module}/store`,
+            data: data
+        })
+    }
+
+    update(id, data) {
+        return axios({
+            method: "PUT",
+            headers: this.header,
+            url: `${this.generateApiUrl()}/${this.module}/update/${id}`,
+            data: data
+        })
+    }
+
 }

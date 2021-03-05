@@ -15,19 +15,19 @@ import {HomeOutlined} from "@ant-design/icons";
 import HeaderMenu from "../layout/header";
 import BaseService from "../../services/BaseService";
 import "./style.css";
+import Component from "../../share/component";
 
 const {Option} = Select;
 const { Content } = Layout;
 
-export default class List extends React.Component {
+export default class List extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            visiblePopup: false,
+            ...this.state,
             data: [],
             selectedRowKeys: [],
-            loading: false
         }
         this.columns = []
     }
@@ -39,6 +39,11 @@ export default class List extends React.Component {
 
     componentDidMount() {
         this.getLists();
+        if(this.state.modalVisible) {
+            this.setState({loading: true});
+        }else{
+            this.setState({loading: false});
+        }
     }
 
     async getLists() {
@@ -73,12 +78,14 @@ export default class List extends React.Component {
         this.setState({ selectedRowKeys });
     };
 
-    handleShowAddNewForm() {}
+    handleShowAddNewForm(e) {
+        this.setState({modalVisible: true});
+    }
 
     renderButtonAction() {
         return (
-        <Space size="small">
-            <Button type="primary" onClick={this.handleShowAddNewForm}>
+        <Space size="small" style={{marginBottom: '15px'}}>
+            <Button type="primary" onClick={() => this.handleShowAddNewForm()}>
                 Add New
             </Button>
             <Button type="danger">
@@ -88,26 +95,9 @@ export default class List extends React.Component {
         )
     }
 
-    handleSubmit() {}
-    handleCancel() {
-        this.setState({visiblePopup: false});
-    }
-
     handShowEditModal(rowId) {
         console.log(rowId);
-        this.setState({visiblePopup: true});
-    }
-
-    handleModal() {
-        return <Modal
-            style={{top: 20}}
-            title={this.title}
-            visible={this.state.visiblePopup}
-            onOk={() => this.handleSubmit()}
-            onCancel={() => this.handleCancel()}
-            width={this.modalWidth}
-      >
-      </Modal>
+        this.setState({modalVisible: true});
     }
 
     handleSelectChange() {}
@@ -145,7 +135,7 @@ export default class List extends React.Component {
                 <Content>
                     {this.renderBreadCrumb()}
                     {this.renderFilterRecord()}
-                    {this.handleModal()}
+                    {this.renderModal()}
                     <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
                         {this.renderButtonAction()}
                         <Table

@@ -5,3 +5,7 @@ table tr:nth-child(2n) td {
 table tr {
     height: 20px !important;
 }
+
+.ant-form {
+    padding: 0;
+}
