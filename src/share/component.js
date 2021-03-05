@@ -10,6 +10,7 @@ import {
     Select,
     message
 } from "antd";
+import {ExclamationCircleOutlined} from "@ant-design/icons";
 
 const {Option} = Select;
 const {TextArea} = Input;
@@ -19,8 +20,7 @@ export default class Component extends React.Component {
         super()
         this.state = {
             modalVisible: false,
-            modalContent: '',
-            loading: false
+            modalContent: ''
         }
         this.Modal = Modal;
         this.Button = Button;
@@ -34,10 +34,11 @@ export default class Component extends React.Component {
         this.TextArea = TextArea;
         this.okTextModel = '';
         this.message = message;
+        this.ExclamationCircleOutlined = ExclamationCircleOutlined;
     }
 
     handleCancel() {
-        this.setState({modalVisible: false});
+        this.setState({modalVisible: false, loading: false});
     }
 
     renderModal() {
@@ -49,6 +50,7 @@ export default class Component extends React.Component {
             onCancel={() => this.handleCancel()}
             width={this.modalWidth}
             footer={null}
+            onOk={() => this.setState({modalVisible: false})}
         >
             {this.state.modalContent}
         </Modal>

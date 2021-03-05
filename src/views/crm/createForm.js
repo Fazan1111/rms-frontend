@@ -14,7 +14,6 @@ export default class FormCreate extends Component {
             email: '',
             address: '',
             note: '',
-            loading: false
         }
 
         this.service = new CustomerService();
@@ -40,8 +39,17 @@ export default class FormCreate extends Component {
         try {
             this.setState({loading: true});
             await this.insertCustomer(customer);
+            window.location.reload(false);
             this.message.success('Insert success..............');
-            this.setState({loading: false, modalVisible: false});
+            this.setState({
+                loading: false, 
+                modalVisible: false,
+                name: '',
+                contact: '',
+                email: '',
+                address: '',
+                note: ''
+            });
         } catch {
             this.message.error('Error data not inseted!.........');
             this.setState({loading: false, modalVisible: false});
@@ -101,11 +109,7 @@ export default class FormCreate extends Component {
                         {
                           type: 'email',
                           message: 'The input is not valid E-mail!',
-                        },
-                        {
-                          required: true,
-                          message: 'Please input your E-mail!',
-                        },
+                        }
                     ]}
                 >
                     <this.Input onChange={this.handleEmail} />

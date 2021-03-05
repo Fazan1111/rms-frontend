@@ -18,7 +18,6 @@ export default class BaseService {
     }
 
     list() {
-        console.log(this.util.getApiToken);
         return axios({
             method: "GET",
             headers: this.header,
@@ -49,6 +48,15 @@ export default class BaseService {
             headers: this.header,
             url: `${this.generateApiUrl()}/${this.module}/update/${id}`,
             data: data
+        })
+    }
+
+    delete(ids) {
+        return axios({
+            method: "DELETE",
+            headers: this.header,
+            url: `${this.generateApiUrl()}/${this.module}/delete`,
+            data: ids
         })
     }
 

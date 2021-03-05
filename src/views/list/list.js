@@ -28,6 +28,7 @@ export default class List extends Component {
             ...this.state,
             data: [],
             selectedRowKeys: [],
+            loading: false
         }
         this.columns = []
     }
@@ -58,8 +59,38 @@ export default class List extends Component {
             console.log(err);
             this.setState({loading: false});
         }
-        
+    
+    }
 
+    async delete() {
+        this.setState({loading: true});
+        try {
+            const keys = {
+                "ids": this.state.selectedRowKeys
+            }
+            const deleteIds = await this.service.delete(keys);
+            this.getLists();
+            this.setState({loading: false});
+            
+        } catch {
+            this.getLists();
+            this.setState({loading: false});
+        }
+        
+    }
+
+    confirmDelete() {
+        this.delete();
+    }
+
+    deleteData() {
+        Modal.confirm({
+            title: 'Are you sure to delete this ?',
+            icon: <this.ExclamationCircleOutlined />,
+            okText: 'Yes',
+            onOk: () => this.confirmDelete(),
+            cancelText: 'Cancel',
+        })
     }
 
     rendertitle() {
@@ -88,7 +119,7 @@ export default class List extends Component {
             <Button type="primary" onClick={() => this.handleShowAddNewForm()}>
                 Add New
             </Button>
-            <Button type="danger">
+            <Button type="danger" onClick={() => this.deleteData()}>
                 Delete
             </Button>
         </Space>
@@ -142,7 +173,7 @@ export default class List extends Component {
                             columns={this.columns}
                             dataSource={this.state.data}
                             onRow={record => ({
-                                onDoubleClick: () => this.handShowEditModal(record.id)
+                                onDoubleClick: () => this.handShowEditModal(record)
                             })}
                             rowSelection={rowSelection}
                             loading={this.state.loading}

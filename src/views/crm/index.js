@@ -52,12 +52,10 @@ export default class Customer extends List {
         })
     }
 
-    async handShowEditModal(id) {
-        const response = await this.service.detail(id);
-        console.log(response);
+    async handShowEditModal(record) {
         this.setState({
             modalVisible: true,
-            modalContent: <FormEdit formData={response.data} />
+            modalContent: <FormEdit formData={record} />
         })
     }
 }
