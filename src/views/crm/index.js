@@ -52,9 +52,10 @@ export default class Customer extends List {
         })
     }
 
-    async handShowEditModal(record) {
+    handShowEditModal(record) {
         this.setState({
             modalVisible: true,
+            loading: true,
             modalContent: <FormEdit formData={record} />
         })
     }

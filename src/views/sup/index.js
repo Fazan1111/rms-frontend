@@ -52,7 +52,4 @@ export default class Supplier extends List {
     title = "Supplier"
     service = new SupplierService();
 
-    renderButtonAction() {
-        return <div></div>
-    }  
 }

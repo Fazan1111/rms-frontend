@@ -27,6 +27,10 @@ body {
   pointer-events: none;
 }
 
+.ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+  background-color: #e6f7ff;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

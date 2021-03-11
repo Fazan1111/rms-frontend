@@ -28,7 +28,6 @@ export default class List extends Component {
             ...this.state,
             data: [],
             selectedRowKeys: [],
-            loading: false
         }
         this.columns = []
     }
@@ -40,11 +39,9 @@ export default class List extends Component {
 
     componentDidMount() {
         this.getLists();
-        if(this.state.modalVisible) {
-            this.setState({loading: true});
-        }else{
-            this.setState({loading: false});
-        }
+    }
+
+    componentWillReceiveProps() {
     }
 
     async getLists() {
@@ -68,7 +65,7 @@ export default class List extends Component {
             const keys = {
                 "ids": this.state.selectedRowKeys
             }
-            const deleteIds = await this.service.delete(keys);
+            await this.service.delete(keys);
             this.getLists();
             this.setState({loading: false});
             
@@ -93,6 +90,13 @@ export default class List extends Component {
         })
     }
 
+    handleCancel() {
+        this.setState({loading: true, modalVisible: false});
+        this.getLists();
+        //window.location.reload();
+        this.setState({loading: false});
+    }
+
     rendertitle() {
         return <span>{this.title}</span>
     }
@@ -105,7 +109,6 @@ export default class List extends Component {
     }
 
     onSelectChange = selectedRowKeys => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys });
     };
 

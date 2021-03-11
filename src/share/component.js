@@ -20,7 +20,8 @@ export default class Component extends React.Component {
         super()
         this.state = {
             modalVisible: false,
-            modalContent: ''
+            modalContent: '',
+            loading: false
         }
         this.Modal = Modal;
         this.Button = Button;
@@ -35,10 +36,12 @@ export default class Component extends React.Component {
         this.okTextModel = '';
         this.message = message;
         this.ExclamationCircleOutlined = ExclamationCircleOutlined;
+        this.modalWidth = 600;
     }
 
     handleCancel() {
-        this.setState({modalVisible: false, loading: false});
+        this.setState({modalVisible: false});
+
     }
 
     renderModal() {
@@ -57,6 +60,8 @@ export default class Component extends React.Component {
     }
 
     render() {
-        return this.renderModal;
+        return <div>
+            {this.renderModal}
+        </div>
     }
 }
