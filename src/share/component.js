@@ -8,7 +8,8 @@ import {
     Row,
     Col,
     Select,
-    message
+    message,
+    InputNumber
 } from "antd";
 import {ExclamationCircleOutlined} from "@ant-design/icons";
 
@@ -23,6 +24,8 @@ export default class Component extends React.Component {
             modalContent: '',
             loading: false
         }
+
+        //Ant Design
         this.Modal = Modal;
         this.Button = Button;
         this.Input = Input;
@@ -35,6 +38,8 @@ export default class Component extends React.Component {
         this.TextArea = TextArea;
         this.okTextModel = '';
         this.message = message;
+        this.InputNumber = InputNumber;
+
         this.ExclamationCircleOutlined = ExclamationCircleOutlined;
         this.modalWidth = 600;
     }

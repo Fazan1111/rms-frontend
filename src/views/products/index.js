@@ -1,106 +1,130 @@
-import React from 'react';
-import API_BASE_URL from '../../config/config';
-import { Layout, Breadcrumb, Button, Modal } from 'antd';
-import HeaderMenu from '../layout/header';
-import { DeleteOutlined, EditOutlined, PlusCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import React from "react";
+import List from "../list/list";
+import ProductService from "../../services/ProductService";
+import FormCreate from "./create";
+import FormUpdate from "./edit";
+import CategoryService from "../../services/CategoryService";
 
-const { Content } = Layout;
-const { confirm } = Modal;
-
-class Products extends React.Component {
-
-    constructor() {
-        super();
+export default class products extends List {
+    constructor(props) {
+        super(props);
         this.state = {
-            products: [],
+            ...this.state
+        }
+        this.columns = [
+            {
+                title: "Name",
+                dataIndex: 'name',
+                key: 'name',
+                fixed: 'left',
+                sorter: (a, b) => a.name.length - b.name.length,
+            },
+            {
+                title: "Rice Code",
+                dataIndex: 'sku',
+                key: 'sku',
+                fixed: 'left',
+            },
+            {
+                title: "Category",
+                dataIndex: 'category',
+                key: 'category',
+                fixed: 'left',
+                render: (record, i) => {
+                    return record.name;
+                }
+            },
+            {
+                title: "Quantity",
+                dataIndex: 'qty',
+                key: 'qty',
+                fixed: 'left',
+                render: (qty) => new Intl.NumberFormat().format(qty) + 'Kg'
+            },
+            {
+                title: "Cost",
+                dataIndex: 'cost',
+                key: 'cost',
+                fixed: 'left',
+                render: (cost, i) => {
+                    return new Intl.NumberFormat().format(cost) + '៛';
+                }
+            },
+            {
+                title: "Price",
+                dataIndex: 'price',
+                key: 'price',
+                fixed: 'left',
+                render: (price, i) => {
+                    return new Intl.NumberFormat().format(price) + '៛';
+                }
+            }
+        ]
+        this.service = new ProductService();
+        this.categoryService = new CategoryService();
+        this.title = "Product"
+    }
+
+    async handleShowAddNewForm() {
+        const categoryList = await this.getCategoryList();
+        if (categoryList) { 
+            this.setState({
+                modalVisible: true,
+                modalContent: <FormCreate 
+                                    closeModal={this.onCloseModal}  
+                                    parentCallBack={this.handleFormCreateCallBack}
+                                    categoryList={categoryList}
+                                />,
+            })
         }
     }
 
-    componentDidMount() {
-        this.getStudentCollection();
+    async handShowEditModal(record) {
+        const detail = await this.getDetail(record.id);
+        const categories = await this.getCategoryList();
+        if (detail && categories) {
+            this.setState({
+                modalVisible: true,
+                modalContent: <FormUpdate
+                                formData={detail}
+                                parentCallBack={this.handleFormUpdateCallBack}
+                                closeModal={this.onCloseModal}
+                                categoryList={categories}
+                             />
+            })
+        }
     }
 
-    async getStudentCollection() {
+    onCloseModal = () => {
+        this.setState({modalVisible: false});     
+    }
+
+    handleFormCreateCallBack = (newCreateData) => {
+        this.setState({loading: false, data: newCreateData});
+    }
+
+    handleFormUpdateCallBack = (newUpdateData) => {
+        this.setState({data: newUpdateData, loading: false});
+        console.log(newUpdateData);
+    }
+
+    async getCategoryList() {
+        const result = await this.categoryService.list();
+        if (result) {
+            return result.data;
+        }
+    }
+
+    async getDetail(rowId) {
         try {
-            const response = await fetch(API_BASE_URL + '/product');
-            const studentCollection = await response.json();
-            this.setState({ products: studentCollection });
-            console.log(this.state.products);
-        } catch (err) {
-            console.error(err);
+            this.setState({loading: true});
+            const result = await this.service.detail(rowId);
+            if (result) {
+                this.setState({loading: false});
+                return result.data;
+            }
+        } catch {
+            this.setState({loading: false});
         }
-    }
-
-    deleteProdcut(id) {
-        confirm({
-            icon: <ExclamationCircleOutlined />,
-            content: <p>Are you sure?</p>,
-            onOk() {
-                fetch(API_BASE_URL + '/product/' + id, {
-                    method: 'DELETE',
-                })
-            },
-            onCancel() {
-                console.log('Cancel');
-            },
-        })
-    }
-
-    render() {
-
-        return (
-            <Layout className="site-layout">
-                <HeaderMenu />
-                <Content style={{ margin: '0 16px' }}>
-
-                    <Breadcrumb style={{ margin: '16px 0' }}>
-                        <Breadcrumb.Item>Home</Breadcrumb.Item>
-                        <Breadcrumb.Item>Product</Breadcrumb.Item>
-                    </Breadcrumb>
-                    <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-                        <h1>List Product</h1>
-                        <Link to={'products/create'}>
-                            <Button icon={<PlusCircleOutlined />} type="primary">Add New</Button>
-                        </Link>
-                        <table border="1">
-                            <thead>
-                                <tr>
-                                    <th>N&deg;</th>
-                                    <th>Name</th>
-                                    <th>Color</th>
-                                    <th>Quanty</th>
-                                    <th>Price</th>
-                                    <th style={{ width: '100px' }}>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    this.state.products.map((product, i) =>
-                                        <tr key={product.id} style={{ height: '28px' }}>
-                                            <td> {i + 1} </td>
-                                            <td> {product.pro_name} </td>
-                                            <td> {product.pro_color} </td>
-                                            <td> {product.qty} </td>
-                                            <td> {product.price} </td>
-                                            <td>
-                                                <Link to={"/products/edit/" + product.id}>
-                                                    <Button type="default" style={{ marginRight: '5px' }} icon={<EditOutlined />}></Button>
-                                                </Link>
-                                                <Button danger type="default" icon={<DeleteOutlined />} onClick={(event) => { this.deleteProdcut(event, product.id) }}>
-
-                                                </Button>
-                                            </td>
-                                        </tr>
-                                    )
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </Content>
-            </Layout>
-        )
     }
 }
-
-export default Products;

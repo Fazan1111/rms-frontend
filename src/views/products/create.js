@@ -1,119 +1,192 @@
 import React from 'react';
-import HeaderMenu from '../layout/header';
-import {Breadcrumb, Layout, Form, Input, Button} from 'antd';
-import API_BASE_URL from '../../config/config';
-import {Link} from 'react-router-dom';
+import ProductService from '../../services/ProductService';
+import Component from "../../share/component";
 
 
-const {Content} = Layout;
 
-class CreateProduct extends React.Component {
+export default class FormCreate extends Component {
     constructor() {
         super()
         this.state = {
+            ...this.state,
             name: '',
-            color: '',
-            qty: '',
-            price: '',
-            image: '',
-            error: false
+            categoryId: 0,
+            sku: '',
+            qty: 0,
+            cost: 0,
+            price: 0,
+            note: '',
+            categorys: [],
+            newData: []        
         }
+
+        this.service = new ProductService();
+
         this.handleName = this.handleName.bind(this);
-        this.handleColor = this.handleColor.bind(this);
+        this.handleSku = this.handleSku.bind(this);
+        this.handleCategory = this.handleCategory.bind(this);
         this.handleQty = this.handleQty.bind(this);
+        this.handleCost = this.handleCost.bind(this);
         this.handlePrice = this.handlePrice.bind(this);
-        //this.handleImage = this.handleImage.bind(this);
+        this.handleNote = this.handleNote.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleName(e) {
-        this.setState({name: e.target.value})
+        this.setState({name: e.target.value});
     }
 
-    handleColor(e) {
-        this.setState({color: e.target.value})
+    handleSku(e) {
+        this.setState({sku: e.target.value});
     }
 
-    handleQty(e) {
-        this.setState({qty: e.target.value})
+    handleQty(qty) {
+        this.setState({qty: qty});
     }
 
-    handlePrice(e) {
-        this.setState({price: e.target.value})
+    handleCategory(value) {
+        this.setState({categoryId: value});
     }
 
-    async handleSubmit(e) {
-        e.preventDefault();
-        const response = await fetch(API_BASE_URL + '/products', {
-            method: 'POST',
-            headers: {
-                'Content-Type':'application/json',
-                Accept: 'application/json'
-            },
-            body: JSON.stringify({
-                "name": this.state.name,
-                "color": this.state.color,
-                "qty": this.state.qty,
-                "price": this.state.price
-            })
-        })
-        const products = await response.json();
+    handleCost(cost) {
+        this.setState({cost: cost});
+    }
 
-        if (products.errors) {
-            this.setState({
-                error: true,
-            });
-        } else {
-            this.setState({
-                name: '',
-                color: '',
-                qty: '',
-                price: '',
-                error: false,
-            });
+    handlePrice(price) {
+        this.setState({price: price});
+    }
+
+    handleNote(e) {
+        this.setState({note: e.target.value});
+    }
+
+    async handleSubmit() {
+        let product = {
+            "name": this.state.name,
+            "categoryId": this.state.categoryId,
+            "sku": this.state.sku,
+            "qty": this.state.qty,
+            "cost": this.state.cost,
+            "price": this.state.price,
+            "note": this.state.note
         }
+        await this.createProduct(product);
+        this.props.closeModal();
+        this.message.success('item create success');
+    }
+
+    async createProduct(product) {
+        try {
+            this.setState({loading: true});
+            const insert = await this.service.insert(product);
+            if (insert) {
+                const response = await this.service.list();
+                if (response) {
+                    this.setState({
+                        newData: response.data,
+                        loading: false
+                    })
+                    this.props.parentCallBack(this.state.newData);
+                }
+            }
+            this.setState({loading: false});
+        } catch {
+            this.setState({loading: false});
+        }
+    }
+
+    componentDidMount() {
+        this.setState({categorys: this.props.categoryList})
     }
 
     render(){
     
         return(
-            <Layout className="site-layout">
-                <HeaderMenu />
-                <Content style={{ margin: '0 16px' }}>
-                    <Breadcrumb style={{ margin: '16px 0' }}>
-                        <Link to = {'/'}><Breadcrumb.Item>Home</Breadcrumb.Item></Link>
-                        <Link to = {'/products'}><Breadcrumb.Item>Product</Breadcrumb.Item></Link>
-                        <Breadcrumb.Item>Create</Breadcrumb.Item>
-                    </Breadcrumb>
+            <this.Form 
+                name="form_create" 
+                layout="vertical"
+                onFinish={() => this.handleSubmit()}
+            >
+                <this.Row gutter={[14, 14]}>
+                    <this.Col span={12}>
+                        <this.Form.Item 
+                            name="name"
+                            label="Name"
+                            placeholder="Name"
+                            rules={[{ required: true, message: 'Please input product name!' }]}
+                        >
+                            <this.Input onChange={this.handleName} />
+                        </this.Form.Item>
+                        <this.Form.Item 
+                            name="sku"
+                            label="SKU"
+                            placeholder="SKU"
+                        >
+                            <this.Input onChange={this.handleSku} />
+                        </this.Form.Item>
+                        <this.Form.Item 
+                            name="cost"
+                            label="Cost"
+                            placeholder="Cost"
+                            rules={[{required: true, message: 'please input cost'}]}
+                        >
+                            <this.InputNumber style={{width: '100%'}} onChange={this.handleCost} />
+                        </this.Form.Item>
+                    </this.Col>
 
-                    <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-                        <h1 style={{marginTop: '-20px', fontSize:'25px'}}>Create Product</h1>
-                        <form onSubmit={this.handleSubmit}>
-                            <Form.Item label="Name">
-                                <Input placeholder="input name" value ={this.state.name} onChange = {this.handleName} />
-                            </Form.Item>
+                    <this.Col span={12}>
+                        <this.Form.Item
+                            label="Category"
+                            rules={[{required: true, message: 'Please select category'}]}
+                        >
+                            <this.Select
+                                showSearch
+                                placeholder="Search to Select"
+                                optionFilterProp="children"
+                                filterOption={(input, option) =>
+                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
+                                filterSort={(optionA, optionB) =>
+                                    optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                                }
+                                onChange={this.handleCategory}
+                            >
+                                {this.state.categorys.map((cate, i) => 
+                                    <this.Option value={cate.id}>{cate.name}</this.Option>
+                                )}
+                            </this.Select>
+                        </this.Form.Item>
+                        <this.Form.Item 
+                            name="qty"
+                            label="Quantity"
+                            placeholder="Quantity"
+                            rules={[{required: true, message: 'please input quantity'}]}
+                        >
+                            <this.InputNumber onChange={this.handleQty} style={{width: '100%'}} />
+                        </this.Form.Item>
+                        <this.Form.Item 
+                            label="Price"
+                            placeholder="Price"
+                            rules={[{required: true, message: 'please input price'}]}
+                        >
+                            <this.InputNumber onChange={this.handlePrice} style={{width: '100%'}} />
+                        </this.Form.Item>
+                    </this.Col>
 
-                            <Form.Item label="Color">
-                                <Input placeholder="input color" value ={this.state.color} onChange = {this.handleColor} />
-                            </Form.Item>
-
-                            <Form.Item label="Quantity">
-                                <Input placeholder="input quantity" value ={this.state.qty} onChange = {this.handleQty} />
-                            </Form.Item>
-
-                            <Form.Item label="Price">
-                                <Input placeholder="input price" value ={this.state.price} onChange = {this.handlePrice} />
-                            </Form.Item>
-
-                            <Form.Item>
-                                <Button type="primary" htmlType="submit">Submit</Button>
-                            </Form.Item>
-                        </form>
-                    </div>
-                </Content>
-            </Layout>
+                    <this.Col span={24}>
+                        <this.Form.Item
+                            label=" Description"
+                            placeholder="Description"
+                        >
+                            <this.TextArea onChange={this.handleNote} />
+                        </this.Form.Item>         
+                    </this.Col>
+                </this.Row>
+                
+                <this.Button type="primary" htmlType="submit" loading={this.state.loading}>
+                    Save
+                </this.Button>
+            </this.Form>
         )
     }
 }
-
-export default CreateProduct;
