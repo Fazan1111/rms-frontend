@@ -5,7 +5,7 @@ import FormCreate from "./create";
 import FormUpdate from "./edit";
 import CategoryService from "../../services/CategoryService";
 
-export default class products extends List {
+export default class Products extends List {
     constructor(props) {
         super(props);
         this.state = {
@@ -96,16 +96,16 @@ export default class products extends List {
     }
 
     onCloseModal = () => {
-        this.setState({modalVisible: false});     
+        this.setState({modalVisible: false, loading: true});     
     }
 
     handleFormCreateCallBack = (newCreateData) => {
-        this.setState({loading: false, data: newCreateData});
+        this.setState({data: newCreateData, loading: false});
     }
 
     handleFormUpdateCallBack = (newUpdateData) => {
         this.setState({data: newUpdateData, loading: false});
-        console.log(newUpdateData);
+        console.log(this.state.loading);
     }
 
     async getCategoryList() {

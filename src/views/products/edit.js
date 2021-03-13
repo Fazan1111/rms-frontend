@@ -71,7 +71,7 @@ export default class FormUpdate extends Component {
             "price": this.state.price,
             "note": this.state.note
         }
-        await this.updateProduct(product);
+        this.updateProduct(product);
         this.props.closeModal();
         this.message.success('item create success');
     }
@@ -79,7 +79,7 @@ export default class FormUpdate extends Component {
     async updateProduct(product) {
         try {
             this.setState({loading: true});
-            const insert = await this.service.update(product.id, product);
+            const insert = await this.service.update(this.state.id, product);
             if (insert) {
                 const response = await this.service.list();
                 if (response) {
@@ -98,14 +98,14 @@ export default class FormUpdate extends Component {
 
     componentWillReceiveProps(nextProps) {
         this.setState({
-            id: nextProps.id,
-            name: nextProps.name,
-            categoryId: nextProps.categoryId,
-            sku: nextProps.sku,
-            qty: nextProps.qty,
-            cost: nextProps.cost,
-            price: nextProps.price,
-            note: nextProps.note
+            id: nextProps.formData.id,
+            name: nextProps.formData.name,
+            categoryId: nextProps.formData.categoryId,
+            sku: nextProps.formData.sku,
+            qty: nextProps.formData.qty,
+            cost: nextProps.formData.cost,
+            price: nextProps.formData.price,
+            note: nextProps.formData.note
         })
     }
 

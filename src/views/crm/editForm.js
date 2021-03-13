@@ -8,11 +8,13 @@ export default class FormEdit extends Component {
         super(props);
         this.state = {
             ...this.state,
+            id: 0,
             name: '',
             contact: '',
             email: '',
             address: '',
-            note: ''
+            note: '',
+            newData: []
         }
 
         this.service = new CustomerService();
@@ -32,25 +34,29 @@ export default class FormEdit extends Component {
             "address": this.state.address,
             "note": this.state.note
         }
-
-        let id = this.props.formData.id;
-        
-        try {
-            this.setState({
-                modalVisible: false,
-                loading: true
-            });
-            this.update(id, customer);
-            this.message.success('Update success..............');
-            window.location.reload(false);
-        } catch {
-            this.message.error('Error data not update! .........');
-        }
-        
+        this.updateCustomer(customer);
+        this.props.closeModal();
+        this.message.success('item create success');
     }
 
-    async update(id, data) {
-        await this.service.update(id, data);
+    async updateCustomer(data) {
+        try {
+            this.setState({loading: true});
+            const insert = await this.service.update(this.state.id, data);
+            if (insert) {
+                const response = await this.service.list();
+                if (response) {
+                    this.setState({
+                        newData: response.data,
+                        loading: false
+                    })
+                    this.props.parentCallBack(this.state.newData);
+                }
+            }
+            this.setState({loading: false});
+        } catch {
+            this.setState({loading: false});
+        }
     }
 
     handleName(e) {
@@ -75,6 +81,7 @@ export default class FormEdit extends Component {
 
     componentDidMount() {
         this.setState({
+            id: this.props.formData.id,
             name: this.props.formData.name,
             contact: this.props.formData.contact,
             email: this.props.formData.email,
@@ -83,48 +90,55 @@ export default class FormEdit extends Component {
         })
     }
 
+    componentWillReceiveProps(newProps) {
+        this.setState({
+            id: newProps.formData.id,
+            name: newProps.formData.name,
+            contact: newProps.formData.contact,
+            email: newProps.formData.email,
+            address: newProps.formData.address,
+            note: newProps.formData.note
+        })
+    }
+
     render() {
-        console.log('mdal', this.state.modalVisible);
         return (
             <this.Form 
-                name="form_create" 
+                name="form_update" 
                 layout="vertical"
                 onFinish={() => this.handleSubmit()}
             >
                 <this.Form.Item 
-                    name="name"
                     label="Name"
                     rules={[{ required: true, message: 'Please input customer name!' }]}
                 >
-                    <this.Input defaultValue={this.props.formData.name} onChange={this.handleName} />
+                    <this.Input value={this.state.name} onChange={this.handleName} />
                 </this.Form.Item>
 
                 <this.Form.Item 
-                    name="phone"
                     label="Phone Number"
                 >
-                    <this.Input defaultValue={this.props.formData.contact} onChange={this.handlePhone} />
+                    <this.Input value={this.state.contact} onChange={this.handlePhone} />
                 </this.Form.Item>
 
                 <this.Form.Item 
-                    name="email"
                     label="Email"
                 >
-                    <this.Input defaultValue={this.props.formData.email} onChange={this.handleEmail} />
+                    <this.Input value={this.state.email} onChange={this.handleEmail} />
                 </this.Form.Item>
 
                 <this.Form.Item 
                     name="address"
                     label="Address"
                 >
-                    <this.Input defaultValue={this.props.formData.address} onChange={this.handleAddress} />
+                    <this.Input value={this.state.address} onChange={this.handleAddress} />
                 </this.Form.Item>
 
                 <this.Form.Item
                     name="note"
                     label="Note"
                 >
-                    <this.TextArea maxLength={100} defaultValue={this.props.note} onChange={this.handleNote} />
+                    <this.TextArea value={this.state.note} onChange={this.handleNote} />
                 </this.Form.Item>
 
                 <this.Button type="primary" htmlType="submit" loading={this.state.loading}>

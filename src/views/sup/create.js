@@ -1,5 +1,5 @@
 import React from "react";
-import CustomerService from "../../services/CustomerService";
+import SupplierService from "../../services/SupplierService";
 import Component from "../../share/component";
 
 
@@ -17,7 +17,7 @@ export default class FormCreate extends Component {
             newData: []
         }
 
-        this.service = new CustomerService();
+        this.service = new SupplierService();
         this.handleName = this.handleName.bind(this);
         this.handlePhone = this.handlePhone.bind(this);
         this.handleEmail = this.handleEmail.bind(this);
@@ -26,10 +26,8 @@ export default class FormCreate extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleCancel() {}
-
     async handleSubmit() {
-        let customer = {
+        let data = {
             "name": this.state.name,
             "contact": this.state.contact,
             "email": this.state.email,
@@ -37,15 +35,15 @@ export default class FormCreate extends Component {
             "note": this.state.note
         }
         
-        this.insertCustomer(customer);
+        this.insertSupplier(data);
         this.props.closeModal();
         this.message.success('item create success');
     }
 
-    async insertCustomer(customer) {
+    async insertSupplier(data) {
         try {
             this.setState({loading: true});
-            const insert = await this.service.insert(customer);
+            const insert = await this.service.insert(data);
             if (insert) {
                 const response = await this.service.list();
                 if (response) {

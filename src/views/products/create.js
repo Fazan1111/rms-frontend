@@ -70,7 +70,7 @@ export default class FormCreate extends Component {
             "price": this.state.price,
             "note": this.state.note
         }
-        await this.createProduct(product);
+        this.createProduct(product);
         this.props.closeModal();
         this.message.success('item create success');
     }

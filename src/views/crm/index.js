@@ -1,7 +1,7 @@
 import React from "react";
 import List from "../list/list";
 import CustomerService from "../../services/CustomerService";
-import FormEdit from "./editForm";
+import FormUpdate from "./editForm";
 import FormCreate from "./createForm";
 
 export default class Customer extends List {
@@ -48,15 +48,51 @@ export default class Customer extends List {
     handleShowAddNewForm() {
         this.setState({
             modalVisible: true,
-            modalContent: <FormCreate />,
+            modalContent: <FormCreate 
+                                closeModal={this.onCloseModal}  
+                                parentCallBack={this.handleFormCreateCallBack}
+                            />,
         })
     }
 
-    handShowEditModal(record) {
-        this.setState({
-            modalVisible: true,
-            loading: true,
-            modalContent: <FormEdit formData={record} />
-        })
+    async handShowEditModal(record) {
+        const detail = await this.getDetail(record.id);
+        if (detail) {
+            this.setState({
+                modalVisible: true,
+                modalContent: <FormUpdate
+                                formData={detail}
+                                parentCallBack={this.handleFormUpdateCallBack}
+                                closeModal={this.onCloseModal}
+                             />
+            })
+        }
+    }
+
+    onCloseModal = () => {
+        this.setState({modalVisible: false, loading: true});     
+    }
+
+    handleFormCreateCallBack = (newCreateData) => {
+        this.setState({data: newCreateData, loading: false});
+        console.log('chid data', newCreateData);
+    }
+
+    handleFormUpdateCallBack = (newUpdateData) => {
+        this.setState({data: newUpdateData, loading: false});
+        console.log(newUpdateData);
+    }
+
+    async getDetail(rowId) {
+        try {
+            this.setState({loading: true});
+            const result = await this.service.detail(rowId);
+            if (result) {
+                this.setState({loading: false});
+                return result.data;
+            }
+        } catch {
+            this.setState({loading: false});
+        }
     }
 }
