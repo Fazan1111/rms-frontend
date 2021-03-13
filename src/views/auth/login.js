@@ -37,15 +37,12 @@ export default class Login extends React.Component {
 
     async handleSubmit(e) {
         this.setState({error: false});
-        if(localStorage.getItem('accessToken')) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userType');
-        }
+        sessionStorage.clear();
         try {
             const response = await this.userLogin();
             if (response.data && response.data.access_token) {
-                localStorage.setItem('accessToken', response.data.access_token);
-                localStorage.setItem('userType', response.data.userRole);
+                sessionStorage.setItem('accessToken', response.data.access_token);
+                sessionStorage.setItem('userType', response.data.userRole);
                 this.setState({redirect: true, loading: true});
             } else {
                 this.setState({error: true});
