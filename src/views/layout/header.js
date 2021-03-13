@@ -2,18 +2,21 @@ import React from 'react';
 import {Layout, Menu, Dropdown} from 'antd';
 import "./style.css";
 import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
+import App from '../../App';
 
 const { Header } = Layout;
 
 class HeaderMenu extends React.Component {
+
     handleGoProfile() {}
 
     handleLogout() {
-        localStorage.removeItem('accessToken');
+        sessionStorage.clear();
         window.location.reload();
     }
 
     render() {
+
         const menu = (
             <Menu style={{width: '200px'}}>
                 <Menu.Item key="0">

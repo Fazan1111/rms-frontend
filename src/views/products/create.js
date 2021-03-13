@@ -130,7 +130,7 @@ export default class FormCreate extends Component {
                             placeholder="Cost"
                             rules={[{required: true, message: 'please input cost'}]}
                         >
-                            <this.InputNumber style={{width: '100%'}} onChange={this.handleCost} />
+                            <this.InputNumber defaultValue={0} style={{width: '100%'}} onChange={this.handleCost} />
                         </this.Form.Item>
                     </this.Col>
 
@@ -162,14 +162,14 @@ export default class FormCreate extends Component {
                             placeholder="Quantity"
                             rules={[{required: true, message: 'please input quantity'}]}
                         >
-                            <this.InputNumber onChange={this.handleQty} style={{width: '100%'}} />
+                            <this.InputNumber defaultValue={0} onChange={this.handleQty} style={{width: '100%'}} />
                         </this.Form.Item>
                         <this.Form.Item 
                             label="Price"
                             placeholder="Price"
                             rules={[{required: true, message: 'please input price'}]}
                         >
-                            <this.InputNumber onChange={this.handlePrice} style={{width: '100%'}} />
+                            <this.InputNumber defaultValue={0} onChange={this.handlePrice} style={{width: '100%'}} />
                         </this.Form.Item>
                     </this.Col>
 

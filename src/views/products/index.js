@@ -4,12 +4,14 @@ import ProductService from "../../services/ProductService";
 import FormCreate from "./create";
 import FormUpdate from "./edit";
 import CategoryService from "../../services/CategoryService";
+import Enum from "../enum";
 
 export default class Products extends List {
     constructor(props) {
         super(props);
         this.state = {
-            ...this.state
+            ...this.state,
+            categories: []
         }
         this.columns = [
             {
@@ -25,20 +27,21 @@ export default class Products extends List {
                 key: 'sku',
                 fixed: 'left',
             },
-            {
-                title: "Category",
-                dataIndex: 'category',
-                key: 'category',
-                fixed: 'left',
-                render: (record, i) => {
-                    return record.name;
-                }
-            },
+            // {
+            //     title: "Category",
+            //     dataIndex: 'category',
+            //     key: 'category',
+            //     fixed: 'left',
+            //     render: (record, i) => {
+            //         return record.name;
+            //     }
+            // },
             {
                 title: "Quantity",
                 dataIndex: 'qty',
                 key: 'qty',
                 fixed: 'left',
+                sorter: (a, b) => a.qty - b.qty,
                 render: (qty) => new Intl.NumberFormat().format(qty) + 'Kg'
             },
             {
@@ -46,6 +49,7 @@ export default class Products extends List {
                 dataIndex: 'cost',
                 key: 'cost',
                 fixed: 'left',
+                sorter: (a, b) => a.cost - b.cost,
                 render: (cost, i) => {
                     return new Intl.NumberFormat().format(cost) + '៛';
                 }
@@ -55,8 +59,24 @@ export default class Products extends List {
                 dataIndex: 'price',
                 key: 'price',
                 fixed: 'left',
+                sorter: (a, b) => a.price - b.price,
                 render: (price, i) => {
                     return new Intl.NumberFormat().format(price) + '៛';
+                }
+            },
+            {
+                title: "Stock Status",
+                dataIndex: 'qty',
+                key: 'qty',
+                fixed: 'left',
+                render: (qty, i) => {
+                    if (qty >= 500) {
+                        return <span style={{color: '#1890ff'}}>In Stock</span>;
+                    } else if (qty <= 500 && qty > 50) {
+                        return <span style={{color: 'orange'}}>Warning</span>;
+                    } else if (qty < 50) {
+                        return <span style={{color: 'red'}}>Out of Stock</span>;
+                    }
                 }
             }
         ]
@@ -111,6 +131,7 @@ export default class Products extends List {
     async getCategoryList() {
         const result = await this.categoryService.list();
         if (result) {
+            this.setState({categories: result.data});
             return result.data;
         }
     }
@@ -126,5 +147,46 @@ export default class Products extends List {
         } catch {
             this.setState({loading: false});
         }
+    }
+
+    handleStatusChange() {
+
+    }
+
+    renderFilterRecord() {
+        return <div className="site-layout-background" style={{ margin: '10px 24px 0px 24px', backgroundColor: 'white' }}>
+            <this.Row style={{padding: '15px'}}>
+                <this.Col span={6} order={1}>
+                    <this.Input placeholder="Search" />
+                </this.Col>
+                <this.Col span={6} order={2}>
+                    <this.Select defaultValue="All" style={{width: '85%', marginLeft: '20px'}} onChange={this.handleSelectChange}>
+                        <this.Option value={0}>All</this.Option>
+                        {
+                            this.state.categories.map((cate, i) =>
+                                <this.Option dataIndex={i} value={cate.id}>{cate.name}</this.Option>
+                            )
+                        }
+                    </this.Select>
+                </this.Col>
+                <this.Col span={6} order={3}>
+                    <this.Select defaultValue="All" style={{width: '85%'}} onChange={this.handleStatusChange}>
+                        <this.Option value={0}>All</this.Option>
+                        <this.Option dataIndex={1} value={Enum.stockStatus.IN_STOCK}>In Stock</this.Option>
+                        <this.Option dataIndex={2} value={Enum.stockStatus.WARNING}>Warning</this.Option>
+                        <this.Option dataIndex={3} value={Enum.stockStatus.OUT_OF_STOCK}>Out of Stock</this.Option>
+                    </this.Select>
+                </this.Col>
+                <this.Col span={6} order={3}>
+                    <this.Button type="primary">Search</this.Button>
+                </this.Col>
+            </this.Row>
+        </div>
+    }
+
+
+    componentDidMount() {
+        this.getLists();
+        this.getCategoryList();
     }
 }
