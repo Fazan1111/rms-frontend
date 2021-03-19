@@ -9,9 +9,16 @@ import {
     Col,
     Select,
     message,
-    InputNumber
+    InputNumber,
+    DatePicker,
+    Space
 } from "antd";
-import {ExclamationCircleOutlined} from "@ant-design/icons";
+import {
+    ExclamationCircleOutlined, 
+    MinusCircleOutlined, 
+    PlusOutlined 
+
+} from "@ant-design/icons";
 
 const {Option} = Select;
 const {TextArea} = Input;
@@ -39,6 +46,12 @@ export default class Component extends React.Component {
         this.okTextModel = '';
         this.message = message;
         this.InputNumber = InputNumber;
+        this.DatePicker = DatePicker;
+        this.Space = Space;
+
+        //Ant Desing Icons
+        this.MinusCircleOutlined= MinusCircleOutlined;
+        this.PlusOutlined = PlusOutlined;
 
         this.ExclamationCircleOutlined = ExclamationCircleOutlined;
         this.modalWidth = 600;

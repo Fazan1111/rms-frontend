@@ -43,7 +43,8 @@ export default class Login extends React.Component {
             if (response.data && response.data.access_token) {
                 sessionStorage.setItem('accessToken', response.data.access_token);
                 sessionStorage.setItem('userType', response.data.userRole);
-                this.setState({redirect: true, loading: true});
+                //this.setState({redirect: true, loading: true});
+                window.location.reload();
             } else {
                 this.setState({error: true});
             }
@@ -62,9 +63,9 @@ export default class Login extends React.Component {
 
     render() {
 
-        if (this.state.redirect) {
-            return <App />
-        }
+        // if (this.state.redirect) {
+        //     return <App />
+        // }
         return (
             <Form
                 name="normal_login"

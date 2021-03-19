@@ -33,26 +33,27 @@ class Sidebar extends React.Component {
                         <Menu.Item key="3" icon={<UnorderedListOutlined />}>Role</Menu.Item>
                     </SubMenu>
                     <SubMenu key="sub2" icon={<CodepenOutlined />} title="Contact">
-                        <Menu.Item key="4" icon={<UnorderedListOutlined />}><Link to={'/supplier'} className="nav-link">Supplier</Link></Menu.Item>
-                        <Menu.Item key="5" icon={<UnorderedListOutlined />}><Link to={'/customer'} className="nav-link">Customer</Link></Menu.Item>
+                        <Menu.Item key="4" icon={<UnorderedListOutlined />}><Link to={'/employee'} className="nav-link">Employee</Link></Menu.Item>
+                        <Menu.Item key="5" icon={<UnorderedListOutlined />}><Link to={'/supplier'} className="nav-link">Supplier</Link></Menu.Item>
+                        <Menu.Item key="6" icon={<UnorderedListOutlined />}><Link to={'/customer'} className="nav-link">Customer</Link></Menu.Item>
                     </SubMenu>
                     <SubMenu key="sub3" icon={<CodepenOutlined />} title="Product">
-                        <Menu.Item key="6" icon={<UnorderedListOutlined />}><Link to={'/category'} className="nav-link">Category</Link></Menu.Item>
-                        <Menu.Item key="7" icon={<UnorderedListOutlined />}><Link to={'/products'} className="nav-link">Product</Link></Menu.Item>
+                        <Menu.Item key="7" icon={<UnorderedListOutlined />}><Link to={'/category'} className="nav-link">Category</Link></Menu.Item>
+                        <Menu.Item key="8" icon={<UnorderedListOutlined />}><Link to={'/products'} className="nav-link">Product</Link></Menu.Item>
                     </SubMenu>
                     <SubMenu key="sub4" icon={<CodepenOutlined />} title="Transaction">
-                        <Menu.Item key="8" icon={<UnorderedListOutlined />}><Link to={'/supplier'} className="nav-link">Purchase</Link></Menu.Item>
-                        <Menu.Item key="9" icon={<UnorderedListOutlined />}><Link to={'/customer'} className="nav-link">Sell</Link></Menu.Item>
-                        <Menu.Item key="10" icon={<UnorderedListOutlined />}><Link to={'/customer'} className="nav-link">Payment</Link></Menu.Item>
-                        <Menu.Item key="11" icon={<UnorderedListOutlined />}><Link to={'/customer'} className="nav-link">Exspense</Link></Menu.Item>
+                        <Menu.Item key="9" icon={<UnorderedListOutlined />}><Link to={'/purchase'} className="nav-link">Purchase</Link></Menu.Item>
+                        <Menu.Item key="10" icon={<UnorderedListOutlined />}><Link to={'/customer'} className="nav-link">Sell</Link></Menu.Item>
+                        <Menu.Item key="11" icon={<UnorderedListOutlined />}><Link to={'/customer'} className="nav-link">Payment</Link></Menu.Item>
+                        <Menu.Item key="12" icon={<UnorderedListOutlined />}><Link to={'/customer'} className="nav-link">Exspense</Link></Menu.Item>
                     </SubMenu>
                     <SubMenu key="sub5" icon={<CodepenOutlined />} title="Report">
-                        <Menu.Item key="12" icon={<UnorderedListOutlined />}><Link to={'/supplier'} className="nav-link">Purchase</Link></Menu.Item>
-                        <Menu.Item key="13" icon={<UnorderedListOutlined />}><Link to={'/customer'} className="nav-link">Sell</Link></Menu.Item>
-                        <Menu.Item key="14" icon={<UnorderedListOutlined />}><Link to={'/customer'} className="nav-link">Payment</Link></Menu.Item>
-                        <Menu.Item key="15" icon={<UnorderedListOutlined />}><Link to={'/customer'} className="nav-link">Exspense</Link></Menu.Item>
-                        <Menu.Item key="16" icon={<UnorderedListOutlined />}><Link to={'/customer'} className="nav-link">Income</Link></Menu.Item>
-                        <Menu.Item key="17" icon={<UnorderedListOutlined />}><Link to={'/customer'} className="nav-link">Aging</Link></Menu.Item>
+                        <Menu.Item key="13" icon={<UnorderedListOutlined />}><Link to={'/supplier'} className="nav-link">Purchase</Link></Menu.Item>
+                        <Menu.Item key="14" icon={<UnorderedListOutlined />}><Link to={'/customer'} className="nav-link">Sell</Link></Menu.Item>
+                        <Menu.Item key="15" icon={<UnorderedListOutlined />}><Link to={'/customer'} className="nav-link">Payment</Link></Menu.Item>
+                        <Menu.Item key="16" icon={<UnorderedListOutlined />}><Link to={'/customer'} className="nav-link">Exspense</Link></Menu.Item>
+                        <Menu.Item key="17" icon={<UnorderedListOutlined />}><Link to={'/customer'} className="nav-link">Income</Link></Menu.Item>
+                        <Menu.Item key="18" icon={<UnorderedListOutlined />}><Link to={'/customer'} className="nav-link">Aging</Link></Menu.Item>
                     </SubMenu>
                 </Menu>
             </Sider>
