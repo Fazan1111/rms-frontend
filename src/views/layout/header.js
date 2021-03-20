@@ -11,7 +11,7 @@ class HeaderMenu extends React.Component {
     handleGoProfile() {}
 
     handleLogout() {
-        sessionStorage.clear();
+        localStorage.clear();
         window.location.reload();
     }
 

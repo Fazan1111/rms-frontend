@@ -3,12 +3,12 @@ import moment from "moment";
 export default class Util {
     getApiToken() {
         //const accessToken = localStorage.getItem('accessToken');
-        let accessToken = sessionStorage.getItem('accessToken');
+        let accessToken = localStorage.getItem('accessToken');
         return accessToken;
     }
 
     getUserType() {
-        return sessionStorage.getItem('userRole');
+        return localStorage.getItem('userRole');
     }
 
     formatDate (value, format = "DD-MMM-YYYY") {

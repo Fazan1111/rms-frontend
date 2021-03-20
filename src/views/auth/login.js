@@ -4,6 +4,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import App from "../../App";
 import "./auth.css";
+import { Redirect } from "react-router-dom";
 
 export default class Login extends React.Component {
     constructor(props) {
@@ -37,14 +38,16 @@ export default class Login extends React.Component {
 
     async handleSubmit(e) {
         this.setState({error: false});
-        sessionStorage.clear();
+        localStorage.clear();
+        console.log(localStorage.getItem('accessToken'));
         try {
             const response = await this.userLogin();
             if (response.data && response.data.access_token) {
-                sessionStorage.setItem('accessToken', response.data.access_token);
-                sessionStorage.setItem('userType', response.data.userRole);
+                localStorage.setItem('accessToken', response.data.access_token);
+                localStorage.setItem('userType', response.data.userRole);
                 //this.setState({redirect: true, loading: true});
-                window.location.reload();
+                //window.location.reload();
+                this.setState({token: response.data.access_token});
             } else {
                 this.setState({error: true});
             }
@@ -63,15 +66,15 @@ export default class Login extends React.Component {
 
     render() {
 
-        // if (this.state.redirect) {
-        //     return <App />
-        // }
+        if (this.state.token) {
+            return <App />
+        }
         return (
             <Form
                 name="normal_login"
                 className="login-form"
                 initialValues={{
-                    remember: true,
+                    remember: false,
                 }}
                 onFinish={this.handleSubmit}
             >
@@ -86,14 +89,15 @@ export default class Login extends React.Component {
                     
                 >
                     <Input 
+                        name='username'
+                        type='text'
                         prefix={<UserOutlined 
                         className="site-form-item-icon" 
-                        autoComplete="off" 
                         />} 
+                        defaultValue='Admin'
                         onChange={this.handleChangeName}
                         placeholder="Username" />
                 </Form.Item>
-
                 <Form.Item
                     name="password"
                     rules={[
