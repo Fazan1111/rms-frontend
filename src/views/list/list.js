@@ -156,13 +156,29 @@ export default class List extends Component {
         </div>
     }
 
-    render() {
+    renderTable() {
         const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
         };
 
+        return (
+            <Table
+                columns={this.columns}
+                dataSource={this.state.data}
+                onRow={record => ({
+                    onDoubleClick: () => this.handShowEditModal(record)
+                })}
+                rowSelection={rowSelection}
+                loading={this.state.loading}
+                rowKey={record => record.id}
+                size="middle"
+            />
+        )
+    }
+
+    render() {
         return (
             <Layout className="site-layout">
                 <HeaderMenu />
@@ -172,17 +188,7 @@ export default class List extends Component {
                     {this.renderModal()}
                     <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
                         {this.renderButtonAction()}
-                        <Table
-                            columns={this.columns}
-                            dataSource={this.state.data}
-                            onRow={record => ({
-                                onDoubleClick: () => this.handShowEditModal(record)
-                            })}
-                            rowSelection={rowSelection}
-                            loading={this.state.loading}
-                            rowKey={record => record.id}
-                            size="middle"
-                        />
+                        {this.renderTable()}
                     </div>
                 </Content>
                 

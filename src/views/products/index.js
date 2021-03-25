@@ -51,7 +51,7 @@ export default class Products extends List {
                 fixed: 'left',
                 sorter: (a, b) => a.cost - b.cost,
                 render: (cost, i) => {
-                    return new Intl.NumberFormat().format(cost) + '៛';
+                    return new Intl.NumberFormat().format(cost) + '៛/50Kg';
                 }
             },
             {
@@ -61,7 +61,7 @@ export default class Products extends List {
                 fixed: 'left',
                 sorter: (a, b) => a.price - b.price,
                 render: (price, i) => {
-                    return new Intl.NumberFormat().format(price) + '៛';
+                    return new Intl.NumberFormat().format(price) + '៛/50Kg';
                 }
             },
             {

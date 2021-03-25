@@ -4,6 +4,8 @@ import EmployeeService from "../../../services/EmployeeService";
 import SupplierService from "../../../services/SupplierService";
 import ProductService from "../../../services/ProductService";
 import PurchaseService from "../../../services/PurchaseService";
+import "../style.css"
+import Util from "../../../util/util";
 
 export default class FormCreate extends Component {
     constructor(props) {
@@ -16,12 +18,14 @@ export default class FormCreate extends Component {
             employees: [],
             suppliers: [],
             products: [],
+            newData: []
         }
         
         this.service = new PurchaseService();
         this.employeeService = new EmployeeService();
         this.supplierService = new SupplierService();
         this.productService  = new ProductService();
+        this.util = new Util();
     }
 
     async getEmployeeList() {
@@ -67,17 +71,63 @@ export default class FormCreate extends Component {
         this.setState({purchaseDate: dateString});
     }
 
+    onChangeQty(row, qty) {
+        let price = document.getElementById(`price-row-${row.key}`).value;
+        document.getElementById(`amount-row-${row.key}`).value = price * (qty / 50);
+    }
+
+    onChangePrice(row, price) {
+        let qty = document.getElementById(`qty-row-${row.key}`).value;
+        document.getElementById(`amount-row-${row.key}`).value = price * (qty / 50);
+    }
+
     onFinish(values) {
+        let totalAmount = 0;
+        let purchItems = [];
+        values["purchaseItems"].forEach(value => {
+            let item = {
+                "productId": value.productId,
+                "qty": value.qty,
+                "price": value.price,
+                "amount": value.price * (value.qty / 50)
+            }
+            purchItems.push(item);
+            totalAmount += value.price * (value.qty / 50);
+        })
+
         const data = {
             "employeeId": this.state.employeeId,
             "supplierId": this.state.supplierId,
-            "purchaseDate": this.state.purchaseDate,
-            "purchaseItems": values.purchaseItems
+            "purchaseDate": this.util.dateFormatForMySql(this.state.purchaseDate),
+            "total": totalAmount,
+            "purchaseItems": purchItems
         }
 
-        console.log(data);
+        this.createPurchase(data);
+        this.props.closeModal();
+        this.message.success('Make purcashe order success');
     }
 
+    async createPurchase(data) {
+        try {
+            this.setState({loading: true});
+            const insert = await this.service.insert(data);
+            if (insert) {
+                const response = await this.service.list();
+                if (response) {
+                    this.setState({
+                        newData: response.data,
+                        loading: false
+                    })
+                    this.props.parentCallBack(this.state.newData);
+                }
+            }
+            this.setState({loading: false});
+        } catch {
+            this.setState({loading: false});
+        }
+    }
+ 
     componentDidMount() {
         this.getEmployeeList();
         this.getSupplierList();
@@ -146,8 +196,8 @@ export default class FormCreate extends Component {
                 </this.Row>
                 <this.Row>
                     <this.Col span={24}>
-                        <p>Add Product Items</p>
-                        <this.Form.List name="purchaseItems">
+                        <p>Add product items</p>
+                        <this.Form.List name="purchaseItems" id="purchaseItems">
                             {(fields, { add, remove }) => (
                                 <div>
                                     {fields.map(field => (
@@ -162,7 +212,7 @@ export default class FormCreate extends Component {
                                             {() => (
                                                 <this.Form.Item
                                                     {...field}
-                                                    label="Product"
+                                                    label={field.key !== 0 ? '' : 'Product'}
                                                     name={[field.name, 'productId']}
                                                     fieldKey={[field.fieldKey, 'sight']}
                                                     rules={[{ required: true, message: 'Missing sight' }]}
@@ -178,9 +228,10 @@ export default class FormCreate extends Component {
                                                         filterSort={(optionA, optionB) =>
                                                             optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
                                                         }
+                                                        onChange={this.onChangProduct}
                                                         >
                                                         {this.state.products.map(item => (
-                                                        <this.Option key={item.id} value={item.id}>
+                                                        <this.Option row={field.key} key={item.id} value={item.id} price={item.price}>
                                                             {item.name}
                                                         </this.Option>
                                                         ))}
@@ -191,38 +242,40 @@ export default class FormCreate extends Component {
 
                                             <this.Form.Item
                                                 {...field}
-                                                label="Quantity"
+                                                label={field.key !== 0 ? '' : 'Quantity'}
                                                 name={[field.name, 'qty']}
                                                 fieldKey={[field.fieldKey, 'qty']}
                                                 style={{width: '180px'}}
+                                                
                                                 rules={[{ required: true, message: 'Missing quantity' }]}
                                             >
-                                                <this.Input />
+                                                <this.InputNumber type="number" key={field.key} id={`qty-row-${field.key}`} style={{width:'100%'}} onChange={(value) =>this.onChangeQty(field, value)} />
                                             </this.Form.Item>
 
                                             <this.Form.Item
                                                 {...field}
-                                                label="Price"
+                                                value={0}
+                                                label={field.key !== 0 ? '' : 'Price/50Kg'}
                                                 name={[field.name, 'price']}
                                                 fieldKey={[field.fieldKey, 'price']}
                                                 style={{width: '180px'}}
                                                 rules={[{ required: true, message: 'Missing price' }]}
                                             >
-                                                <this.Input />
+                                                <this.InputNumber id={`price-row-${field.key}`} style={{width: '100%'}} onChange={(value) => this.onChangePrice(field, value)} />
                                             </this.Form.Item>
 
                                             <this.Form.Item
                                                 {...field}
-                                                label="Amount"
+                                                label={field.key !== 0 ? '' : 'Amount'}
                                                 name={[field.name, 'amount']}
                                                 fieldKey={[field.fieldKey, 'amount']}
                                                 style={{width: '180px'}}
                                             >
-                                                <this.Input />
+                                                <this.InputNumber value={100} className='amount' id={`amount-row-${field.key}`} style={{width:'100%', background: 'white', color: 'black'}} disabled />
                                             </this.Form.Item>
 
                                             <this.MinusCircleOutlined onClick={() => remove(field.name)} />
-                                        </this.Space>
+                                       </this.Space>
                                     ))}
 
                                     <this.Form.Item>

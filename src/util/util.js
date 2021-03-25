@@ -15,4 +15,9 @@ export default class Util {
         format = format === null || format === "" ? "DD MMM YYYY" : format;
         return moment(value).format(format);
     }
+
+    dateFormatForMySql(value) {
+        let format = "YYYY-MM-DD h:mm:ss";
+        return moment(value).format(format);
+    }
 }

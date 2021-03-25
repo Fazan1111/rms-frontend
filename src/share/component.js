@@ -11,7 +11,8 @@ import {
     message,
     InputNumber,
     DatePicker,
-    Space
+    Space,
+    Table
 } from "antd";
 import {
     ExclamationCircleOutlined, 
@@ -48,6 +49,7 @@ export default class Component extends React.Component {
         this.InputNumber = InputNumber;
         this.DatePicker = DatePicker;
         this.Space = Space;
+        this.Table = Table;
 
         //Ant Desing Icons
         this.MinusCircleOutlined= MinusCircleOutlined;

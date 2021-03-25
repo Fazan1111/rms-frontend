@@ -1,0 +1,17 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: #ddd;
+}
+
+table thead tr {
+  height: 45px;
+}
+
+table thead tr th {
+  padding: 10px;
+}
+
+table tfoot tr td {
+  text-align: center;
+}
