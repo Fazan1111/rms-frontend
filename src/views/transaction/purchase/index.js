@@ -23,6 +23,7 @@ export default class Purchase extends List {
                 dataIndex: 'purchaseDate',
                 key: 'purchaseDate',
                 fixed: 'left',
+                sorter: (a, b) => a.purchaseDate.length - b.purchaseDate.length,
                 render: (purDate) => {
                     return this.util.formatDate(purDate);
                 }

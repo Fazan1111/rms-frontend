@@ -7,6 +7,7 @@ import Customer from '../crm/index';
 import User from "../user/index";
 import Category from "../cate/index";
 import Purchase from "../transaction/purchase/index";
+import Sale from "../transaction/sell/index";
 
 const routes = [
     {path: '/', exact: true, name: 'Home', component: Home},
@@ -17,7 +18,8 @@ const routes = [
     {path: '/supplier', name: 'Supplier', component: Supplier},
     {path: '/customer', name: 'customer', component: Customer},
     {path: '/user', name: 'User', component: User},
-    {path: '/purchase', name: 'Purchase', component: Purchase}
+    {path: '/purchase', name: 'Purchase', component: Purchase},
+    {path: '/sale', name: 'Sale', component: Sale}
 ]
 
 export default routes;

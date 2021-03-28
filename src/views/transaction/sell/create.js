@@ -1,31 +1,37 @@
 import React from "react";
-import Component from "../../../share/component";
+import CustomerService from "../../../services/CustomerService";
 import EmployeeService from "../../../services/EmployeeService";
-import SupplierService from "../../../services/SupplierService";
 import ProductService from "../../../services/ProductService";
-import PurchaseService from "../../../services/PurchaseService";
-import "../style.css"
+import SaleService from "../../../services/SaleService";
+import Component from "../../../share/component";
 import Util from "../../../util/util";
+
 
 export default class FormCreate extends Component {
     constructor(props) {
         super(props);
         this.state = {
             ...this.state,
-            employeeId: 0,
-            supplierId: 0,
-            purchaseDate: '',
             employees: [],
-            suppliers: [],
+            customers: [],
             products: [],
-            newData: []
+            newData: [],
+            employeeId: 0,
+            customerId: 0,
+            sellDate: ''
         }
-        
-        this.service = new PurchaseService();
+
+        this.service = new SaleService();
         this.employeeService = new EmployeeService();
-        this.supplierService = new SupplierService();
-        this.productService  = new ProductService();
+        this.customerService = new CustomerService();
+        this.productService = new ProductService();
         this.util = new Util();
+    }
+
+    componentDidMount() {
+        this.getEmployeeList();
+        this.getCustomerList();
+        this.getProductList();
     }
 
     async getEmployeeList() {
@@ -39,16 +45,15 @@ export default class FormCreate extends Component {
         }
     }
 
-    async getSupplierList() {
+    async getCustomerList() {
         try {
-            const response = await this.supplierService.list();
+            const response = await this.customerService.list();
             if (response) {
-                this.setState({suppliers: response.data});
+                this.setState({customers: response.data});
             }
-        } catch(err) {
-            throw err;
+        } catch {
+            
         }
-        
     }
 
     async getProductList() {
@@ -58,17 +63,17 @@ export default class FormCreate extends Component {
         }
     }
 
-
+    
     handleEmployee = (empId) => {
         this.setState({employeeId: empId});
     }
 
-    handleSupplier = (supId) => {
-        this.setState({supplierId: supId});
+    handleCustomer = (cusId) => {
+        this.setState({customerId: cusId});
     }
 
     onChangePurchDate = (date, dateString) => {
-        this.setState({purchaseDate: dateString});
+        this.setState({sellDate: dateString});
     }
 
     onChangeQty(row, qty) {
@@ -81,34 +86,34 @@ export default class FormCreate extends Component {
         document.getElementById(`amount-row-${row.key}`).value = price * (qty / 50);
     }
 
-    async onFinish(values) {
+    onSubmit(values) {
         let totalAmount = 0;
-        let purchItems = [];
-        values["purchaseItems"].forEach(value => {
+        let sellItems = [];
+        values["sellItems"].forEach(value => {
             let item = {
                 "productId": value.productId,
                 "qty": value.qty,
                 "price": value.price,
                 "amount": value.price * (value.qty / 50)
             }
-            purchItems.push(item);
+            sellItems.push(item);
             totalAmount += value.price * (value.qty / 50);
         })
 
         const data = {
             "employeeId": this.state.employeeId,
-            "supplierId": this.state.supplierId,
-            "purchaseDate": this.util.dateFormatForMySql(this.state.purchaseDate),
+            "customerId": this.state.customerId,
+            "sellDate": this.util.dateFormatForMySql(this.state.sellDate),
             "total": totalAmount,
-            "purchaseItems": purchItems
+            "sellItems": sellItems
         }
-
-        this.createPurchase(data);
+        
+        this.createSale(data);
         this.props.closeModal();
-        this.message.success('Make purcashe order success');
+        this.message.success('Create sale success');
     }
 
-    async createPurchase(data) {
+    async createSale(data) {
         try {
             this.setState({loading: true});
             const insert = await this.service.insert(data);
@@ -127,12 +132,6 @@ export default class FormCreate extends Component {
             this.setState({loading: false});
         }
     }
- 
-    componentDidMount() {
-        this.getEmployeeList();
-        this.getSupplierList();
-        this.getProductList();
-    }
 
     render() {
         return (
@@ -143,7 +142,7 @@ export default class FormCreate extends Component {
                     remember: true,
                 }}
                 layout="vertical"
-                onFinish={(values) => this.onFinish(values)}
+                onFinish={(values) => this.onSubmit(values)}
             >
                 <this.Row gutter={[8, 8, 8]}>
                     <this.Col span={8}>
@@ -168,7 +167,7 @@ export default class FormCreate extends Component {
                         </this.Form.Item>
                     </this.Col>
                     <this.Col span={8}>
-                        <this.Form.Item label="Supplier">
+                        <this.Form.Item label="Customer">
                             <this.Select
                                 showSearch
                                 placeholder="Search to Select"
@@ -180,24 +179,25 @@ export default class FormCreate extends Component {
                                     optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
                                 }
                                 style={{with:'100%'}}
-                                onChange={this.handleSupplier}
+                                onChange={this.handleCustomer}
                             >
-                                {this.state.suppliers.map((sup) =>
+                                {this.state.customers.map((sup) =>
                                     <this.Option value={sup.id}>{sup.name}</this.Option>
                                 )}
                             </this.Select>
                         </this.Form.Item>
                     </this.Col>
                     <this.Col span={8}>
-                        <this.Form.Item name="purchaseDate" label="Purchase Date">
+                        <this.Form.Item name="sellDate" label="Sale Date">
                             <this.DatePicker style={{width:'100%'}} onChange={this.onChangePurchDate} />
                         </this.Form.Item>
                     </this.Col>
                 </this.Row>
+
                 <this.Row>
                     <this.Col span={24}>
                         <p>Add product items</p>
-                        <this.Form.List name="purchaseItems" id="purchaseItems">
+                        <this.Form.List name="sellItems" id="saleItems">
                             {(fields, { add, remove }) => (
                                 <div>
                                     {fields.map(field => (
