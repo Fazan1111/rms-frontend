@@ -94,7 +94,7 @@ export default class Login extends React.Component {
                         prefix={<UserOutlined 
                         className="site-form-item-icon" 
                         />} 
-                        defaultValue='Admin'
+                        defaultValue=''
                         onChange={this.handleChangeName}
                         placeholder="Username" />
                 </Form.Item>

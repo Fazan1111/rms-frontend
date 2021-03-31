@@ -3,11 +3,16 @@ import SaleService from "../../../services/SaleService";
 import List from "../../list/list";
 import Util from "../../../util/util";
 import FormCreate from "./create";
-
+import Enum from "../../enum";
+import ReceivedPayment from "./receivedPayment";
 
 export default class Sale extends List {
     constructor(props) {
         super(props);
+        this.state = {
+            ...this.state,
+            invoiceId: 0
+        }
         this.util = new Util();
         this.columns = [
             {
@@ -26,18 +31,13 @@ export default class Sale extends List {
                 fixed: 'left'
             },
             {
-                title: "Employee",
-                dataIndex: 'employee',
-                key: 'employee',
-                fixed: 'left',
-                render: (emp) => emp.fname + ' ' + emp.lname
-            },
-            {
                 title: "Customer",
                 dataIndex: 'customer',
                 key: 'customer',
                 fixed: 'left',
-                render: (cus) => cus.name
+                render: (cus) => {
+                    return cus.name;
+                }
             },
             {
                 title: "Amount",
@@ -48,6 +48,38 @@ export default class Sale extends List {
                 render: (amount, i) => {
                     return new Intl.NumberFormat().format(amount) + '៛';
                 }
+            },
+            {
+                title: "Invoice Status",
+                dataIndex: 'status',
+                key: 'status',
+                fixed: 'left',
+                render: (status) => {
+                    if (status === Enum.invoiceStatus.PENDING) {
+                        return <div style={{color: 'orange'}}>Pending</div>
+                    } else if (status === Enum.invoiceStatus.SOME_PAY) {
+                        return <div style={{color: 'blue'}}>Have some paid</div>
+                    } else if (status === Enum.invoiceStatus.PAID) {
+                        return <div style={{color: 'greenyellow'}}>Paid</div>
+                    } else if (status === Enum.invoiceStatus.OVER_DUE) {
+                        return <div style={{color: 'red'}}>Overdue</div>
+                    }
+                }
+            },
+            {
+                title: "Action",
+                dataIndex: "id",
+                key: "id",
+                fixed: "left",
+                render: (id, record) => {
+                    return (
+                        <this.Dropdown overlay={() => this.MenuDropDown(record)} trigger={['click']}>
+                            <this.Button size="small" className="ant-dropdown-link" onClick={() => this.setState({invoiceId: id})}>
+                                Action <this.DownOutlined />
+                            </this.Button>
+                        </this.Dropdown>
+                    )
+                }
             }
         ]
 
@@ -55,14 +87,44 @@ export default class Sale extends List {
         this.title = "Sale";
     }
 
+    MenuDropDown(record) {
+        return (
+            <this.Menu>
+                <this.Menu.Item key="0">
+                    <a onClick={() => this.handleShowReceivedPayment(record)}>Add Payment</a>
+                </this.Menu.Item>
+                <this.Menu.Item key="1">
+                    <a onClick={() => this.handleShowInvoice(record)}>View Invoice</a>
+                </this.Menu.Item>
+            </this.Menu>
+        )
+    }
+
+    handleShowReceivedPayment(record) {
+        this.title = "Receive Payment"
+        this.setState({
+            modalVisible: true,
+            modalContent: <ReceivedPayment 
+                form={this.props.form}
+                formData={record}
+                closeModal={this.onCloseModal}  
+                parentCallBack={this.handleFormCreateCallBack}
+            />
+        })
+    }
+
+    handleShowInvoice(record) {
+        console.log('show invoice', record);
+    }
+
     handleShowAddNewForm() {
         this.setState({
             modalVisible: true,
             modalContent: <FormCreate 
-                                form={this.props.form}
-                                closeModal={this.onCloseModal}  
-                                parentCallBack={this.handleFormCreateCallBack}
-                            />,
+                form={this.props.form}
+                closeModal={this.onCloseModal}  
+                parentCallBack={this.handleFormCreateCallBack}
+            />,
         })
     }
 

@@ -124,7 +124,7 @@ export default class FormCreate extends Component {
                     rules={[{required: true}]}
                 >
                     <this.Select
-                        labelInValue
+                        labelInValue="Payment Method"
                         style={{ width: '100%' }}
                         placeholder="Select User Type"
                         name="userType"

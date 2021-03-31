@@ -20,4 +20,8 @@ export default class Util {
         let format = "YYYY-MM-DD h:mm:ss";
         return moment(value).format(format);
     }
+
+    currencyFormat(currency) {
+        return new Intl.NumberFormat().format(currency);
+    }
 }

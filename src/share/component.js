@@ -12,13 +12,18 @@ import {
     InputNumber,
     DatePicker,
     Space,
-    Table
+    Table,
+    Menu,
+    Dropdown,
+    Divider
 } from "antd";
 import {
     ExclamationCircleOutlined, 
     MinusCircleOutlined, 
-    PlusOutlined 
-
+    PlusOutlined,
+    DownOutlined,
+    DollarCircleOutlined,
+    EyeOutlined
 } from "@ant-design/icons";
 
 const {Option} = Select;
@@ -50,10 +55,16 @@ export default class Component extends React.Component {
         this.DatePicker = DatePicker;
         this.Space = Space;
         this.Table = Table;
+        this.Menu = Menu;
+        this.Dropdown = Dropdown;
+        this.Divider = Divider;
 
         //Ant Desing Icons
         this.MinusCircleOutlined= MinusCircleOutlined;
         this.PlusOutlined = PlusOutlined;
+        this.DownOutlined = DownOutlined;
+        this.DollarCircleOutlined = DollarCircleOutlined;
+        this.EyeOutlined = EyeOutlined;
 
         this.ExclamationCircleOutlined = ExclamationCircleOutlined;
         this.modalWidth = 600;
