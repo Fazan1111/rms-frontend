@@ -3,10 +3,13 @@ import {Layout, Menu, Dropdown} from 'antd';
 import "./style.css";
 import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
 import App from '../../App';
+import Util from '../../util/util';
 
 const { Header } = Layout;
 
 class HeaderMenu extends React.Component {
+
+    util = new Util();
 
     handleGoProfile() {}
 
@@ -36,7 +39,7 @@ class HeaderMenu extends React.Component {
                 <div id="right-blog">
                     <Dropdown overlay={menu} trigger={['click']}>
                         <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                            Administrator <UserOutlined />
+                            {this.util.getUserName()} <UserOutlined />
                         </a>
                     </Dropdown>,
                 </div>

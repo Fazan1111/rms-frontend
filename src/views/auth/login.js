@@ -44,9 +44,10 @@ export default class Login extends React.Component {
             const response = await this.userLogin();
             if (response.data && response.data.access_token) {
                 localStorage.setItem('accessToken', response.data.access_token);
-                localStorage.setItem('userType', response.data.userRole);
+                localStorage.setItem('user', JSON.stringify(response.data.findUser));
+                console.log('user', response.data);
+                console.log('get user', localStorage.getItem('user'));
                 //this.setState({redirect: true, loading: true});
-                //window.location.reload();
                 this.setState({token: response.data.access_token});
             } else {
                 this.setState({error: true});
@@ -134,7 +135,6 @@ export default class Login extends React.Component {
                     <Button type="primary" htmlType="submit" className="login-form-button" loading={this.state.loading}>
                         Log in
                     </Button>
-                    Or <a href="#">register now!</a>
                 </Form.Item>
             </Form>
         )

@@ -24,4 +24,16 @@ export default class Util {
     currencyFormat(currency) {
         return new Intl.NumberFormat().format(currency);
     }
+
+    getCurrentUser() {
+        return this.initialUser().id;
+    }
+
+    getUserName() {
+        return this.initialUser().userName;
+    }
+
+    initialUser() {
+        return JSON.parse(localStorage.getItem('user'));
+    }
 }

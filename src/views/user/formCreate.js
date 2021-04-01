@@ -15,7 +15,8 @@ export default class FormCreate extends Component {
             userType: 0,
             email: '',
             password: '',
-            loading: false
+            loading: false,
+            newData: []
         }
 
         this.handleFname = this.handleFname.bind(this);
@@ -56,7 +57,7 @@ export default class FormCreate extends Component {
 
     async handleSubmit() {
         this.setState({loading: true});
-        let user = {
+        let data = {
             "roleId": 1,
             "firstName": this.state.fname,
             "lastName": this.state.lname,
@@ -65,28 +66,30 @@ export default class FormCreate extends Component {
             "email": this.state.email,
             "password": this.state.password
         }
-        const insert = await this.insertUser(user);
-        if(insert) {
-            this.setState({
-                fname: '',
-                lname: '',
-                username: '',
-                userType: 0,
-                email: '',
-                password: '',
-                loading: false
-            })
+        this.insertUser(data);
+        this.props.closeModal();
+        this.message.success('item create success');
+    }
+
+    async insertUser(data) {
+        try {
+            this.setState({loading: true});
+            const insert = await this.service.insert(data);
+            if (insert) {
+                const response = await this.service.list();
+                if (response) {
+                    this.setState({
+                        newData: response.data,
+                        loading: false
+                    })
+                    this.props.parentCallBack(this.state.newData);
+                }
+            }
+            this.setState({loading: false});
+        } catch {
+            this.setState({loading: false});
         }
-        window.location.reload(false);
-    }
-
-    async insertUser(user) {
-        await this.service.insert(user);
     } 
-
-    componentDidMount() {
-        this.setState({modalVisible: true})
-    }
 
     render() {
         return (

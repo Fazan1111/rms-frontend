@@ -17,8 +17,6 @@ class App extends  React.Component {
 
   render() {
 
-    console.log('ddd', this.state.token);
-
     if(!this.state.token) {
       return <Login />
     }

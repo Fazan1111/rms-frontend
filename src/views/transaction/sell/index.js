@@ -118,6 +118,7 @@ export default class Sale extends List {
     }
 
     handleShowAddNewForm() {
+        this.title = "Create Sale"
         this.setState({
             modalVisible: true,
             modalContent: <FormCreate 

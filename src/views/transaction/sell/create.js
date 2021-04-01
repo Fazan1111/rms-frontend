@@ -146,7 +146,7 @@ export default class FormCreate extends Component {
             >
                 <this.Row gutter={[8, 8, 8]}>
                     <this.Col span={8}>
-                        <this.Form.Item label="Employee">
+                        <this.Form.Item label="Saler">
                             <this.Select
                                 showSearch
                                 placeholder="Search to Select"

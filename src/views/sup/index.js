@@ -48,9 +48,9 @@ export default class Supplier extends List {
         this.setState({
             modalVisible: true,
             modalContent: <FormCreate 
-                                closeModal={this.onCloseModal}  
-                                parentCallBack={this.handleFormCreateCallBack}
-                            />,
+                closeModal={this.onCloseModal}  
+                parentCallBack={this.handleFormCreateCallBack}
+            />,
         })
     }
 
@@ -60,10 +60,10 @@ export default class Supplier extends List {
             this.setState({
                 modalVisible: true,
                 modalContent: <FormUpdate
-                                formData={detail}
-                                parentCallBack={this.handleFormUpdateCallBack}
-                                closeModal={this.onCloseModal}
-                             />
+                    formData={detail}
+                    parentCallBack={this.handleFormUpdateCallBack}
+                    closeModal={this.onCloseModal}
+                />
             })
         }
     }

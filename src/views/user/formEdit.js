@@ -4,18 +4,19 @@ import Component from "../../share/component";
 import Enums from "../enum/index";
 
 
-export default class FormCreate extends Component {
+export default class FormUpdate extends Component {
     constructor(props) {
         super(props);
         this.state = {
             ...this.state,
+            id: 0,
             fname: '',
             lname: '',
             username: '',
             userType: 0,
             email: '',
-            password: '',
-            loading: false
+            loading: false,
+            newData: []
         }
 
         this.handleFname = this.handleFname.bind(this);
@@ -23,7 +24,6 @@ export default class FormCreate extends Component {
         this.handleUsername = this.handleUsername.bind(this);
         this.handleUserType = this.handleUserType.bind(this);
         this.handleEmail = this.handleEmail.bind(this);
-        this.handlePassword = this.handlePassword.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
 
         this.service = new UserService();
@@ -50,10 +50,6 @@ export default class FormCreate extends Component {
         this.setState({email: e.target.value});
     }
 
-    handlePassword(e) {
-        this.setState({password: e.target.value});
-    }
-
     async handleSubmit() {
         this.setState({loading: true, modalVisible: false});
         let user = {
@@ -63,29 +59,53 @@ export default class FormCreate extends Component {
             "userName": this.state.username,
             "userType": this.state.userType,
             "email": this.state.email,
-            "password": this.state.password
         }
-        const insert = await this.insertUser(user);
-        if(insert) {
-            this.setState({
-                fname: '',
-                lname: '',
-                username: '',
-                userType: 0,
-                email: '',
-                password: '',
-                loading: false,
-            })
-        }
-        //window.location.reload(false);
+        
+        this.updateUser(user);
+        this.props.closeModal();
+        this.message.success('User information update success');
     }
 
-    async insertUser(user) {
-        await this.service.insert(user);
+    async updateUser(data) {
+        try {
+            this.setState({loading: true});
+            const update = await this.service.update(this.state.id, data);
+            if (update) {
+                const response = await this.service.list();
+                if (response) {
+                    this.setState({
+                        newData: response.data,
+                        loading: false
+                    })
+                    this.props.parentCallBack(this.state.newData);
+                }
+            }
+            this.setState({loading: false});
+        } catch {
+            this.setState({loading: false});
+        }
     } 
 
     componentDidMount() {
-        
+        this.setState({
+            id: this.props.formData.id,
+            fname: this.props.formData.firstName,
+            lname: this.props.formData.lastName,
+            username: this.props.formData.userName,
+            userType: this.props.formData.userType,
+            email: this.props.formData.email
+        })
+    }
+
+    componentWillReceiveProps(newProps) {
+        this.setState({
+            id: newProps.formData.id,
+            fname: newProps.formData.firstName,
+            lname: newProps.formData.lastName,
+            username: newProps.formData.userName,
+            userType: newProps.formData.userType,
+            email: newProps.formData.email
+        })
     }
 
     handleCancel() {
@@ -93,7 +113,6 @@ export default class FormCreate extends Component {
     }
 
     render() {
-        console.log(this.props.formData.firstName);
         return (
             <this.Form 
                 name="formUser" 
@@ -102,26 +121,23 @@ export default class FormCreate extends Component {
             >
                 <this.Form.Item
                     label="First Name"
-                    name="fname"
                     rules={[{ required: true, message: 'Please input your first name!' }]}
                 >
-                    <this.Input defaultValue={this.props.formData.firstName}  onChange={this.handleFname} />
+                    <this.Input value={this.state.fname}  onChange={this.handleFname} />
                 </this.Form.Item>
 
                 <this.Form.Item
                     label="Last Name"
-                    name="lname"
                     rules={[{ required: true, message: 'Please input your last name!' }]}
                 >
-                    <this.Input defaultValue={this.props.formData.lastName}  onChange={this.handleLname} />
+                    <this.Input value={this.state.lname}  onChange={this.handleLname} />
                 </this.Form.Item>
 
                 <this.Form.Item
                     label="User Name"
-                    name="username"
                     rules={[{ required: true, message: 'Please input your last name!' }]}
                 >
-                    <this.Input defaultValue={this.props.formData.userName} onChange={this.handleUsername} />
+                    <this.Input value={this.state.username} onChange={this.handleUsername} />
                 </this.Form.Item>
 
                 <this.Form.Item
@@ -130,10 +146,9 @@ export default class FormCreate extends Component {
                 >
                     <this.Select
                         labelInValue
-                        defaultValue={{value: this.props.formData.userType}}
+                        value={{value: this.state.userType}}
                         style={{ width: '100%' }}
                         placeholder="Select User Type"
-                        name="userType"
                         onChange={this.handleUserType}
                     >
                         <this.Option value={0}>Select User Type</this.Option>
@@ -145,21 +160,12 @@ export default class FormCreate extends Component {
 
                 <this.Form.Item
                     label="Email"
-                    name="email"
                     rules={[
                         { required: true, message: 'Please input your last name!' },
                         { type: 'email', message: 'The input is not valid E-mail!'}
                     ]}
                 >
-                    <this.Input onChange={this.handleEmail} />
-                </this.Form.Item>
-
-                <this.Form.Item
-                    label="Password"
-                    name="password"
-                    rules={[{ required: true, message: 'Please input your password!' }]}
-                >
-                    <this.Input.Password onChange={this.handlePassword} />
+                    <this.Input value={this.state.email} onChange={this.handleEmail} />
                 </this.Form.Item>
 
                 <this.Button type="primary" htmlType="submit" loading={this.state.loading}>

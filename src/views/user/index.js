@@ -3,7 +3,7 @@ import UserService from "../../services/UserService";
 import List from "../list/list";
 import FormCreate from "./formCreate";
 import Enums from "../enum/index";
-import FormEdit from "./formEdit";
+import FormUpdate from "./formEdit";
 
 export default class UserList extends List {
     constructor(props) {
@@ -50,17 +50,54 @@ export default class UserList extends List {
 
 
     handleShowAddNewForm() {
+        this.title = "Create New User"
         this.setState({
             modalVisible: true,
-            modalContent: <FormCreate />,
+            modalContent: <FormCreate 
+                closeModal={this.onCloseModal}  
+                parentCallBack={this.handleFormCreateCallBack}
+            />,
         })
     }
 
-    handShowEditModal(record) {
-        this.setState({
-            modalVisible: true,
-            modalContent: <FormEdit formData={record} />
-        })
+    async handShowEditModal(record) {
+        this.title = "Update User"
+        const detail = await this.getDetail(record.id);
+        if (detail) {
+            this.setState({
+                modalVisible: true,
+                modalContent: <FormUpdate
+                    formData={detail}
+                    parentCallBack={this.handleFormUpdateCallBack}
+                    closeModal={this.onCloseModal}
+                />
+            })
+        }
+    }
+
+    onCloseModal = () => {
+        this.setState({modalVisible: false, loading: true});     
+    }
+
+    handleFormCreateCallBack = (newCreateData) => {
+        this.setState({data: newCreateData, loading: false});
+    }
+
+    handleFormUpdateCallBack = (newUpdateData) => {
+        this.setState({data: newUpdateData, loading: false});
+    }
+
+    async getDetail(rowId) {
+        try {
+            this.setState({loading: true});
+            const result = await this.service.detail(rowId);
+            if (result) {
+                this.setState({loading: false});
+                return result.data;
+            }
+        } catch {
+            this.setState({loading: false});
+        }
     }
 
 }
