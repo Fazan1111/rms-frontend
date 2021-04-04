@@ -15,7 +15,8 @@ import {
     Table,
     Menu,
     Dropdown,
-    Divider
+    Divider,
+    Tag
 } from "antd";
 import {
     ExclamationCircleOutlined, 
@@ -58,6 +59,7 @@ export default class Component extends React.Component {
         this.Menu = Menu;
         this.Dropdown = Dropdown;
         this.Divider = Divider;
+        this.Tag = Tag;
 
         //Ant Desing Icons
         this.MinusCircleOutlined= MinusCircleOutlined;

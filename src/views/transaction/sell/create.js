@@ -76,6 +76,12 @@ export default class FormCreate extends Component {
         this.setState({sellDate: dateString});
     }
 
+    // onChangProduct(value, row, key) {
+    //     if (row.qty < 50) {
+    //         this.message.error(`This product is out of stock!, The current stock is ${row.qty}`);
+    //     }
+    // }
+
     onChangeQty(row, qty) {
         let price = document.getElementById(`price-row-${row.key}`).value;
         document.getElementById(`amount-row-${row.key}`).value = price * (qty / 50);
@@ -228,10 +234,17 @@ export default class FormCreate extends Component {
                                                         filterSort={(optionA, optionB) =>
                                                             optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
                                                         }
-                                                        onChange={this.onChangProduct}
+                                                        onChange={(value, qty) => this.onChangProduct(value, qty, field.key)}
                                                         >
                                                         {this.state.products.map(item => (
-                                                        <this.Option row={field.key} key={item.id} value={item.id} price={item.price}>
+                                                        <this.Option 
+                                                            row={field.key} 
+                                                            key={item.id} 
+                                                            value={item.id} 
+                                                            disabled={item.qty >= 50 ? false : true} 
+                                                            qty={item.qty}
+                                                            title={item.qty >= 50 ? '' : `This product is out of stock!, The current stock is ${item.qty}Kg`}
+                                                        >
                                                             {item.name}
                                                         </this.Option>
                                                         ))}

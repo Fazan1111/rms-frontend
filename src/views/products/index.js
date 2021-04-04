@@ -71,11 +71,11 @@ export default class Products extends List {
                 fixed: 'left',
                 render: (qty, i) => {
                     if (qty >= 500) {
-                        return <span style={{color: '#1890ff'}}>In Stock</span>;
+                        return <this.Tag style={{color: '#1890ff'}}>In Stock</this.Tag >;
                     } else if (qty <= 500 && qty > 50) {
-                        return <span style={{color: 'orange'}}>Warning</span>;
+                        return <this.Tag  style={{color: 'orange'}}>Warning</this.Tag >;
                     } else if (qty < 50) {
-                        return <span style={{color: 'red'}}>Out of Stock</span>;
+                        return <this.Tag  style={{color: 'red'}}>Out of Stock</this.Tag >;
                     }
                 }
             }

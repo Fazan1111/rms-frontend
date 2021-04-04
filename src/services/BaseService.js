@@ -60,4 +60,23 @@ export default class BaseService {
         })
     }
 
+
+
+    //Report
+    purchaseItemReport() {
+        return axios({
+            method: "GET",
+            headers: this.header,
+            url: `${this.generateApiUrl()}/report/lists/purchase-items`,
+        })
+    }
+
+    sellItemReport() {
+        return axios({
+            method: "GET",
+            headers: this.header,
+            url: `${this.generateApiUrl()}/report/lists/sell-items`,
+        })
+    }
+ 
 }

@@ -29,9 +29,18 @@ export default class ReceivePayment extends List {
         title: "Customer",
         dataIndex: 'sell',
         key: 'sell',
-        fixed: 'tender',
+        fixed: 'left',
         render: (sell) => {
           return sell.customer.name;
+        }
+      },
+      {
+        title: "Received By",
+        dataIndex: 'employee',
+        key: 'employee',
+        fixed: 'left',
+        render: (emp) => {
+          return emp.fname + " " + emp.lname;
         }
       },
       {

@@ -9,6 +9,8 @@ import Category from "../cate/index";
 import Purchase from "../transaction/purchase/index";
 import Sale from "../transaction/sell/index";
 import ReceivePayment from "../transaction/payment/index";
+import PurchaseItemReport from "../report/purchaseItem";
+import SellItemReport from "../report/sellItem";
 
 const routes = [
     {path: '/', exact: true, name: 'Home', component: Home},
@@ -21,7 +23,11 @@ const routes = [
     {path: '/user', name: 'User', component: User},
     {path: '/purchase', name: 'Purchase', component: Purchase},
     {path: '/sale', name: 'Sale', component: Sale},
-    {path: '/payment', name: "ReceivePayment", component: ReceivePayment}
+    {path: '/payment', name: "ReceivePayment", component: ReceivePayment},
+    
+    //
+    {path: '/report/purchase-items', name: 'PurchaseItemReport', component: PurchaseItemReport},
+    {path: '/report/sell-items', name: 'SellItemReport', component: SellItemReport}
 ]
 
 export default routes;

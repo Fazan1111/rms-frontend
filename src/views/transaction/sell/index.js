@@ -5,13 +5,15 @@ import Util from "../../../util/util";
 import FormCreate from "./create";
 import Enum from "../../enum";
 import ReceivedPayment from "./receivedPayment";
+import SellInvoice from "./invoice";
 
 export default class Sale extends List {
     constructor(props) {
         super(props);
         this.state = {
             ...this.state,
-            invoiceId: 0
+            invoiceId: 0,
+            detail: {}
         }
         this.util = new Util();
         this.columns = [
@@ -56,13 +58,13 @@ export default class Sale extends List {
                 fixed: 'left',
                 render: (status) => {
                     if (status === Enum.invoiceStatus.PENDING) {
-                        return <div style={{color: 'orange'}}>Pending</div>
+                        return <this.Tag style={{color: 'orange'}}>Pending</this.Tag>
                     } else if (status === Enum.invoiceStatus.SOME_PAY) {
-                        return <div style={{color: 'blue'}}>Have some paid</div>
+                        return <this.Tag style={{color: 'blue'}}>Lack of money</this.Tag>
                     } else if (status === Enum.invoiceStatus.PAID) {
-                        return <div style={{color: 'greenyellow'}}>Paid</div>
+                        return <this.Tag style={{color: 'green'}}>Paid</this.Tag>
                     } else if (status === Enum.invoiceStatus.OVER_DUE) {
-                        return <div style={{color: 'red'}}>Overdue</div>
+                        return <this.Tag style={{color: 'red'}}>Overdue</this.Tag>
                     }
                 }
             },
@@ -113,8 +115,21 @@ export default class Sale extends List {
         })
     }
 
-    handleShowInvoice(record) {
-        console.log('show invoice', record);
+    async handleShowInvoice(record) {
+        this.modalWidth = 800;
+        this.title = "Sale Invoice"
+        const detail = await this.getDetail(record.id);
+        if (detail) {
+            console.log('show invoice', detail);
+            this.setState({
+                modalVisible: true,
+                modalContent: <SellInvoice
+                    formData={detail}
+                    closeModal={this.onCloseModal}
+                />
+            })
+        }
+        
     }
 
     handleShowAddNewForm() {
@@ -138,58 +153,16 @@ export default class Sale extends List {
         console.log('chid data', newCreateData);
     }
 
-    renderTableExpen(data) {
-        return (
-            <table border="1" style={{borderCollapse: 'collapse'}}>
-                <thead >
-                    <tr>
-                        <th>N&deg;</th>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        data.map((row, i) => 
-                            <tr key={i}>
-                                <td style={{width: '40px', textAlign: 'center'}}>{i+1}</td>
-                                <td style={{padding: '8px'}}>{row.product.name}</td>
-                                <td style={{padding: '8px'}}>{new Intl.NumberFormat().format(row.qty) + 'Kg'}</td>
-                                <td style={{padding: '8px'}}>{new Intl.NumberFormat().format(row.price) + '៛/50Kg'}</td>
-                                <td style={{padding: '8px'}}>{new Intl.NumberFormat().format(row.amount) + '៛'}</td>
-                            </tr>
-                        )
-                    }
-                </tbody>
-            </table>
-        )
-    }
-
-    renderTable() {
-        const { selectedRowKeys } = this.state;
-        const rowSelection = {
-            selectedRowKeys,
-            onChange: this.onSelectChange,
-        };
-
-        return (
-            <this.Table
-                columns={this.columns}
-                dataSource={this.state.data}
-                expandable={{
-                    expandedRowRender: record => this.renderTableExpen(record.sellItems),
-                    rowExpandable: record => record.price !== 'Not Expandable',
-                  }}
-                onRow={record => ({
-                    onDoubleClick: () => this.handShowEditModal(record)
-                })}
-                rowSelection={rowSelection}
-                loading={this.state.loading}
-                rowKey={record => record.id}
-                size="middle"
-            />
-        )
+    async getDetail(id) {
+        try {
+            this.setState({loading: true});
+            const result = await this.service.detail(id);
+            if (result) {
+                this.setState({loading: false});
+                return result.data;
+            }
+        } catch {
+            this.setState({loading: false});
+        }
     }
 }
