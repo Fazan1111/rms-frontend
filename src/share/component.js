@@ -16,7 +16,8 @@ import {
     Menu,
     Dropdown,
     Divider,
-    Tag
+    Tag,
+    Typography
 } from "antd";
 import {
     ExclamationCircleOutlined, 
@@ -29,6 +30,8 @@ import {
 
 const {Option} = Select;
 const {TextArea} = Input;
+const { Text } = Typography;
+const { RangePicker } = DatePicker;
 
 export default class Component extends React.Component {
     constructor() {
@@ -60,6 +63,8 @@ export default class Component extends React.Component {
         this.Dropdown = Dropdown;
         this.Divider = Divider;
         this.Tag = Tag;
+        this.Text = Text;
+        this.RangePicker = RangePicker;
 
         //Ant Desing Icons
         this.MinusCircleOutlined= MinusCircleOutlined;

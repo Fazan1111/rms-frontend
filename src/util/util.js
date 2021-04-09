@@ -21,8 +21,12 @@ export default class Util {
         return moment(value).format(format);
     }
 
-    currencyFormat(currency) {
-        return new Intl.NumberFormat().format(currency);
+    currencyFormat(currency, symbol = '៛') {
+        return new Intl.NumberFormat().format(currency) + symbol;
+    }
+
+    quantityFormat(value, unit) {
+        return new Intl.NumberFormat().format(value) + unit;
     }
 
     getCurrentUser() {

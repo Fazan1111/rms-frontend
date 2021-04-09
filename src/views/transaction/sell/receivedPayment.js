@@ -141,13 +141,13 @@ export default class ReceivedPayment extends Component {
 
                 <this.Row gutter={[8, 8, 8]}>
                     <this.Col span={8}>
-                        <h4>Amount: {this.util.currencyFormat(this.state.amount)}៛</h4>
+                        <h4>Amount: {this.util.currencyFormat(this.state.amount)}</h4>
                     </this.Col>
                     <this.Col span={8}>
-                        <h4>Received Amount: {this.util.currencyFormat(this.state.amount - this.state.amountDue)}៛</h4>
+                        <h4>Received Amount: {this.util.currencyFormat(this.state.amount - this.state.amountDue)}</h4>
                     </this.Col>
                     <this.Col span={8}>
-                        <h4>Amount Due: {this.util.currencyFormat(this.state.amountDue)}៛</h4>
+                        <h4>Amount Due: {this.util.currencyFormat(this.state.amountDue)}</h4>
                     </this.Col>
                 </this.Row>
 

@@ -11,6 +11,7 @@ import Sale from "../transaction/sell/index";
 import ReceivePayment from "../transaction/payment/index";
 import PurchaseItemReport from "../report/purchaseItem";
 import SellItemReport from "../report/sellItem";
+import StockReport from "../report/stock";
 
 const routes = [
     {path: '/', exact: true, name: 'Home', component: Home},
@@ -25,9 +26,10 @@ const routes = [
     {path: '/sale', name: 'Sale', component: Sale},
     {path: '/payment', name: "ReceivePayment", component: ReceivePayment},
     
-    //
+    //Report
     {path: '/report/purchase-items', name: 'PurchaseItemReport', component: PurchaseItemReport},
-    {path: '/report/sell-items', name: 'SellItemReport', component: SellItemReport}
+    {path: '/report/sell-items', name: 'SellItemReport', component: SellItemReport},
+    {path: '/report/stock', name: "StockReport", component: StockReport}
 ]
 
 export default routes;

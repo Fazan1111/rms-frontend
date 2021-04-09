@@ -63,11 +63,12 @@ export default class BaseService {
 
 
     //Report
-    purchaseItemReport() {
+    purchaseItemReport(id, startDate, endDate) {
         return axios({
             method: "GET",
             headers: this.header,
-            url: `${this.generateApiUrl()}/report/lists/purchase-items`,
+            url: `${this.generateApiUrl()}/report/lists/purchase-items?productId=${id}&start=${startDate}&end=${endDate}`,
+            data: {}
         })
     }
 
@@ -76,6 +77,14 @@ export default class BaseService {
             method: "GET",
             headers: this.header,
             url: `${this.generateApiUrl()}/report/lists/sell-items`,
+        })
+    }
+
+    stockReport() {
+        return axios({
+            method: "GET",
+            headers: this.header,
+            url: `${this.generateApiUrl()}/report/lists/stock-report`,
         })
     }
  

@@ -70,5 +70,7 @@ export default class ReceivePayment extends List {
     return (
       <div></div>
     )
-}
+
+ }
+
 }

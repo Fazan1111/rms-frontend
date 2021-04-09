@@ -75,8 +75,8 @@ export default class InvoiceTemplate extends Component {
                                                     <td style={{padding:'5px', textAlign: 'center'}}>{i + 1}</td>
                                                     <td style={{padding:'5px'}}>{item.product.name}</td>
                                                     <td style={{padding:'5px'}}>{new Intl.NumberFormat().format(item.qty) + 'Kg'}</td>
-                                                    <td style={{padding:'5px'}}>{this.util.currencyFormat(item.price) + '៛'}</td>
-                                                    <td style={{padding:'5px'}}>{this.util.currencyFormat(item.amount) + '៛'}</td>
+                                                    <td style={{padding:'5px'}}>{this.util.currencyFormat(item.price)}</td>
+                                                    <td style={{padding:'5px'}}>{this.util.currencyFormat(item.amount)}</td>
                                                 </tr>
                                             )
                                             : ''
@@ -85,7 +85,7 @@ export default class InvoiceTemplate extends Component {
                                 <tfoot>
                                     <tr>
                                         <td colSpan={4}>Total</td>
-                                        <td style={{textAlign: 'left', padding: '5px'}}>{this.util.currencyFormat(this.props.data.amount) + '៛'}</td>
+                                        <td style={{textAlign: 'left', padding: '5px'}}>{this.util.currencyFormat(this.props.data.amount)}</td>
                                     </tr>
                                 </tfoot>
                             </table>

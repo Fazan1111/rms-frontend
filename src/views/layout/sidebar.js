@@ -59,6 +59,7 @@ class Sidebar extends React.Component {
                         <Menu.Item key="13" icon={<UnorderedListOutlined />}><Link to={'/report/sale'} className="nav-link">Invoice</Link></Menu.Item>
                         <Menu.Item key="14" icon={<UnorderedListOutlined />}><Link to={'/report/purchase-items'} className="nav-link">Purchase Items</Link></Menu.Item>
                         <Menu.Item key="15" icon={<UnorderedListOutlined />}><Link to={'/report/sell-items'} className="nav-link">Sale Items</Link></Menu.Item>
+                        <Menu.Item key="16" icon={<UnorderedListOutlined />}><Link to={'/report/stock'} className="nav-link">Stock</Link></Menu.Item>
                     </SubMenu>
                 </Menu>
             </Sider>
