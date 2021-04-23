@@ -24,18 +24,25 @@ class Home extends React.Component {
                 </Breadcrumb>
 
 
-                    <Row style={{marginTop:'10px'}}>
+                    <Row style={{marginTop:'10px'}} gutter={[16, 16]}>
                         <Col span={6}>
                             <Card className="card-dash">
-                                <p>Total Stock In</p>
-                                <h3>1500kg</h3>
+                                <p>Purchase</p>
+                                <h3>10000kg</h3>
                             </Card>,
                         </Col>
                         <Col span={6}>
                             <Card className="card-dash">
-                                <p>Total Stock Out</p>
-                                <h3>900kg</h3>
+                                <p>Sale</p>
+                                <h3>9000kg</h3>
                             </Card>,
+                        </Col>
+
+                        <Col span={6}>
+                            <Card className="card-dash">
+                                <p>Invoice</p>
+                                <h3>10</h3>
+                            </Card>
                         </Col>
                         <Col span={6}>
                             <Card className="card-dash">
@@ -45,7 +52,7 @@ class Home extends React.Component {
                         </Col>
                         <Col span={6}>
                             <Card className="card-dash">
-                                <p>Total Aging</p>
+                                <p>Amount Due</p>
                                 <h3>900$</h3>
                             </Card>,
                         </Col>

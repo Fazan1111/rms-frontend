@@ -60,6 +60,7 @@ export default class Purchase extends List {
     }
 
     handleShowAddNewForm() {
+        this.title = "Make Purchase Order";
         this.setState({
             modalVisible: true,
             modalContent: <FormCreate 

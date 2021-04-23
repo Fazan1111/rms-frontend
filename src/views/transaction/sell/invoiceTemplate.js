@@ -12,6 +12,7 @@ export default class InvoiceTemplate extends Component {
 
 
     render() {
+        console.log('data', this.props.data);
         return(
             <div style={{padding: '30px', fontFamily: 'Khmer Os '}}>
                 <table style={{width: '100%'}}>

@@ -60,7 +60,7 @@ export default class Sale extends List {
                     if (status === Enum.invoiceStatus.PENDING) {
                         return <this.Tag style={{color: 'orange'}}>Pending</this.Tag>
                     } else if (status === Enum.invoiceStatus.SOME_PAY) {
-                        return <this.Tag style={{color: 'blue'}}>Lack of money</this.Tag>
+                        return <this.Tag style={{color: 'blue'}}>Some Paid</this.Tag>
                     } else if (status === Enum.invoiceStatus.PAID) {
                         return <this.Tag style={{color: 'green'}}>Paid</this.Tag>
                     } else if (status === Enum.invoiceStatus.OVER_DUE) {

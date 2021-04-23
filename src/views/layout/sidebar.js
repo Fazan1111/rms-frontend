@@ -38,7 +38,7 @@ class Sidebar extends React.Component {
                     </Menu.Item>
                     <SubMenu key="sub1" icon={<UsergroupAddOutlined />} title="User Management">
                         <Menu.Item key="2" icon={<UserOutlined />}><Link to={'/user'} className="nav-link">User</Link></Menu.Item>
-                        <Menu.Item key="3" icon={<UnorderedListOutlined />}>User Activity</Menu.Item>
+                        <Menu.Item key="3" icon={<UnorderedListOutlined />}><Link to={'/user-activity'}>User Activity</Link></Menu.Item>
                     </SubMenu>
                     <SubMenu key="sub2" icon={<SolutionOutlined />} title="Contact">
                         <Menu.Item key="4" icon={<SolutionOutlined />}><Link to={'/employee'} className="nav-link">Employee</Link></Menu.Item>
@@ -52,11 +52,11 @@ class Sidebar extends React.Component {
                     <SubMenu key="sub4" icon={<SwapOutlined />} title="Transaction">
                         <Menu.Item key="9" icon={<SwapLeftOutlined />}><Link to={'/purchase'} className="nav-link">Purchase</Link></Menu.Item>
                         <Menu.Item key="10" icon={<SwapRightOutlined />}><Link to={'/sale'} className="nav-link">Sale</Link></Menu.Item>
-                        <Menu.Item key="11" icon={<DollarCircleOutlined />}><Link to={'/payment'} className="nav-link">Invoice Payment</Link></Menu.Item>
+                        <Menu.Item key="11" icon={<DollarCircleOutlined />} style={{display: 'none'}}><Link to={'/payment'} className="nav-link">Invoice Payment</Link></Menu.Item>
                     </SubMenu>
                     <SubMenu key="sub5" icon={<BarChartOutlined />} title="Report">
-                        <Menu.Item key="12" icon={<UnorderedListOutlined />}><Link to={'/report/purchase'} className="nav-link">Purchase</Link></Menu.Item>
-                        <Menu.Item key="13" icon={<UnorderedListOutlined />}><Link to={'/report/sale'} className="nav-link">Invoice</Link></Menu.Item>
+                        <Menu.Item key="12" icon={<UnorderedListOutlined />} style={{display: 'none'}}><Link to={'/report/purchase'} className="nav-link">Purchase</Link></Menu.Item>
+                        <Menu.Item key="13" icon={<UnorderedListOutlined />}><Link to={'/report/payment'} className="nav-link">Invoice Payment</Link></Menu.Item>
                         <Menu.Item key="14" icon={<UnorderedListOutlined />}><Link to={'/report/purchase-items'} className="nav-link">Purchase Items</Link></Menu.Item>
                         <Menu.Item key="15" icon={<UnorderedListOutlined />}><Link to={'/report/sell-items'} className="nav-link">Sale Items</Link></Menu.Item>
                         <Menu.Item key="16" icon={<UnorderedListOutlined />}><Link to={'/report/stock'} className="nav-link">Stock</Link></Menu.Item>

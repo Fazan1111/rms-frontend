@@ -86,6 +86,7 @@ export default class Products extends List {
     }
 
     async handleShowAddNewForm() {
+        this.title = "Create Product";
         const categoryList = await this.getCategoryList();
         if (categoryList) { 
             this.setState({
@@ -100,6 +101,7 @@ export default class Products extends List {
     }
 
     async handShowEditModal(record) {
+        this.title = "Update Product";
         const detail = await this.getDetail(record.id);
         const categories = await this.getCategoryList();
         if (detail && categories) {
