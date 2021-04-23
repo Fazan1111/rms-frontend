@@ -61,6 +61,14 @@ export default class BaseService {
     }
 
 
+    //Dashboard
+    getDashboardData() {
+        return axios({
+            method: "GET",
+            headers: this.header,
+            url: `${this.generateApiUrl()}/home`
+        })
+    }
 
     //Report
     purchaseItemReport(id, startDate, endDate) {
