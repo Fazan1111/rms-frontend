@@ -1,6 +1,7 @@
 import React from "react";
 import Component from "../../../share/component";
 import Util from "../../../util/util";
+import _enum from "../../enum";
 
 
 export default class InvoiceTemplate extends Component {
@@ -13,6 +14,12 @@ export default class InvoiceTemplate extends Component {
 
     render() {
         console.log('data', this.props.data);
+        let total = 0;
+        if (this.props.data.billing) {
+            this.props.data.billing.forEach(bill => {
+                total += bill.tender;
+            })
+        }
         return(
             <div style={{padding: '30px', fontFamily: 'Khmer Os '}}>
                 <table style={{width: '100%'}}>
@@ -73,11 +80,11 @@ export default class InvoiceTemplate extends Component {
                                         this.props.data.sellItems ?
                                             this.props.data.sellItems.map((item, i) => 
                                                 <tr key={i}>
-                                                    <td style={{padding:'5px', textAlign: 'center'}}>{i + 1}</td>
-                                                    <td style={{padding:'5px'}}>{item.product.name}</td>
-                                                    <td style={{padding:'5px'}}>{new Intl.NumberFormat().format(item.qty) + 'Kg'}</td>
-                                                    <td style={{padding:'5px'}}>{this.util.currencyFormat(item.price)}</td>
-                                                    <td style={{padding:'5px'}}>{this.util.currencyFormat(item.amount)}</td>
+                                                    <td style={{padding:'5px', textAlign: 'center', background:'none'}}>{i + 1}</td>
+                                                    <td style={{padding:'5px', background: 'none'}}>{item.product.name}</td>
+                                                    <td style={{padding:'5px', background: 'none'}}>{new Intl.NumberFormat().format(item.qty) + 'Kg'}</td>
+                                                    <td style={{padding:'5px', background: 'none'}}>{this.util.currencyFormat(item.price)}</td>
+                                                    <td style={{padding:'5px', background: 'none'}}>{this.util.currencyFormat(item.amount)}</td>
                                                 </tr>
                                             )
                                             : ''
@@ -92,6 +99,40 @@ export default class InvoiceTemplate extends Component {
                             </table>
                         </td>
                     </tr> 
+
+                    {
+
+                        this.props.data.billing && this.props.data.billing.length > 0 ?
+                        <tr>
+                            <td colSpan={2} style={{textAlign: 'right', background: 'none'}}>
+                                <table style={{
+                                        width: '380px', 
+                                        border: '1px solid #ddd', 
+                                        marginTop: '20px',
+                                        textAlign: 'left',
+                                        lineHeight: '10px'
+                                }}>
+                                    {
+                                        this.props.data.billing.map((bill, i) =>
+                                            <tr key={i}>
+                                                <td style={{padding: '10px', background: 'none'}}>
+                                                    <p>- {this.util.formatDate(bill.payDate)}</p>
+                                                </td>
+                                                <td  style={{padding: '8px 6px 0 7px', background: 'none'}}>
+                                                    <p style ={{width: '100px'}}>: {this.util.currencyFormat(bill.tender, '៛')} </p> <p>: By {bill.payMethod.name} </p>
+                                                </td>
+                                            </tr>
+                                        )
+                                    }
+                                    <tr>
+                                        <td style={{padding: '10px', background: 'none'}}>Total</td>
+                                        <td style={{padding: '10px', background: 'none'}}>: {this.util.currencyFormat(total)}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        : ''
+                    }
 
                     <tr>
                         <td colSpan={2} style={{textAlign: 'center', background: 'none', paddingTop: '25px', lineHeight: '12px'}}>
