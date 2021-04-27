@@ -1,6 +1,5 @@
 import React from "react";
 import List from "../../list/list";
-import FormUpdate from "./update";
 import FormCreate from "./create";
 import PurchaseService from "../../../services/PurchaseService";
 import Util from "../../../util/util";

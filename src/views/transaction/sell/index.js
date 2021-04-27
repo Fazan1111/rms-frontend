@@ -93,10 +93,10 @@ export default class Sale extends List {
         return (
             <this.Menu>
                 <this.Menu.Item key="0">
-                    <a onClick={() => this.handleShowReceivedPayment(record)}>Add Payment</a>
+                    <li onClick={() => this.handleShowReceivedPayment(record)}>Add Payment</li>
                 </this.Menu.Item>
                 <this.Menu.Item key="1">
-                    <a onClick={() => this.handleShowInvoice(record)}>View Invoice</a>
+                    <li onClick={() => this.handleShowInvoice(record)}>View Invoice</li>
                 </this.Menu.Item>
             </this.Menu>
         )

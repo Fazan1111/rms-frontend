@@ -93,10 +93,6 @@ export default class StockReport extends List {
         }
     }
 
-    renderButtonAction() {
-        return '';
-    }
-
     handShowEditModal(any) {
         return '';
     }

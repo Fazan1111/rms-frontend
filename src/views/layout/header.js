@@ -2,7 +2,6 @@ import React from 'react';
 import {Layout, Menu, Dropdown} from 'antd';
 import "./style.css";
 import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
-import App from '../../App';
 import Util from '../../util/util';
 
 const { Header } = Layout;
@@ -23,10 +22,10 @@ class HeaderMenu extends React.Component {
         const menu = (
             <Menu style={{width: '200px'}}>
                 <Menu.Item key="0">
-                    <a onClick={this.handleGoProfile}> <UserOutlined /> Profile</a>
+                    <li onClick={this.handleGoProfile}> <UserOutlined /> Profile</li>
                 </Menu.Item>
                 <Menu.Item key="1">
-                    <a onClick={this.handleLogout}> <LogoutOutlined /> Logout</a>
+                    <li onClick={this.handleLogout}> <LogoutOutlined /> Logout</li>
                 </Menu.Item>
             </Menu>
         )
@@ -38,9 +37,9 @@ class HeaderMenu extends React.Component {
                 </div>
                 <div id="right-blog">
                     <Dropdown overlay={menu} trigger={['click']}>
-                        <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                        <span style={{cursor: 'pointer'}} className="ant-dropdown-link" onClick={e => e.preventDefault()}>
                             {this.util.getUserName()} <UserOutlined />
-                        </a>
+                        </span>
                     </Dropdown>,
                 </div>
             </Header>

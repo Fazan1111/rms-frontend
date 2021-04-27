@@ -4,7 +4,6 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import App from "../../App";
 import "./auth.css";
-import { Redirect } from "react-router-dom";
 
 export default class Login extends React.Component {
     constructor(props) {
@@ -126,7 +125,7 @@ export default class Login extends React.Component {
                     <Checkbox>Remember me</Checkbox>
                     </Form.Item>
 
-                    <a className="login-form-forgot" href="">
+                    <a className="login-form-forgot" href="#abc">
                         Forgot password
                     </a>
                 </Form.Item>

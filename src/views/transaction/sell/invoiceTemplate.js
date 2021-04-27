@@ -1,7 +1,6 @@
 import React from "react";
 import Component from "../../../share/component";
 import Util from "../../../util/util";
-import _enum from "../../enum";
 
 
 export default class InvoiceTemplate extends Component {
@@ -13,7 +12,6 @@ export default class InvoiceTemplate extends Component {
 
 
     render() {
-        console.log('data', this.props.data);
         let total = 0;
         if (this.props.data.billing) {
             this.props.data.billing.forEach(bill => {
@@ -25,7 +23,7 @@ export default class InvoiceTemplate extends Component {
                 <table style={{width: '100%'}}>
                     <tr>
                         <td style={{width: '50%'}}>
-                            <img src={this.logo} style={{width: '70px', marginBottom: '8px'}} />
+                            <img src={this.logo} style={{width: '70px', marginBottom: '8px'}} alt="Logo" />
                             
                             <h2>FR-Rice</h2>
                         </td>

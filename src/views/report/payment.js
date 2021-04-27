@@ -3,7 +3,6 @@ import ReceivePaymentService from "../../services/ReceivePaymentService";
 import Util from "../../util/util";
 import List from "../list/list";
 import PrintPayment from "./prints/printPayment";
-import moment from "moment";
 import ReactToPrint, { PrintContextConsumer } from 'react-to-print';
 import { CSVLink } from "react-csv";
 
