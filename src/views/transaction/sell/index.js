@@ -144,6 +144,10 @@ export default class Sale extends List {
         })
     }
 
+    handShowEditModal() {
+        return <div></div>
+    }
+
     onCloseModal = () => {
         this.setState({modalVisible: false, loading: true});     
     }

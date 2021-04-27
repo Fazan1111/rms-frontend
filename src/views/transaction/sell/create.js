@@ -76,11 +76,11 @@ export default class FormCreate extends Component {
         this.setState({sellDate: dateString});
     }
 
-    // onChangProduct(value, row, key) {
-    //     if (row.qty < 50) {
-    //         this.message.error(`This product is out of stock!, The current stock is ${row.qty}`);
-    //     }
-    // }
+    onChangProduct(value, row, key) {
+        if (row.qty < 50) {
+            this.message.error(`This product is out of stock!, The current stock is ${row.qty}`);
+        }
+    }
 
     onChangeQty(row, qty) {
         let price = document.getElementById(`price-row-${row.key}`).value;
